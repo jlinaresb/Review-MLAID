@@ -39,7 +39,8 @@ require(ggpubr)
 res$time.log10 = log10(res$time)
 
 plot_time = ggplot(res, aes(x=samples, y=time, color = algorithm)) + 
-  geom_point() +
-  geom_smooth(method = lm, se = F) +
+  geom_line() +
+  # geom_smooth(method = lm, se = F) +
   facet_wrap(~omic, scales = 'free_x') +
   theme_bw()
+plot_time

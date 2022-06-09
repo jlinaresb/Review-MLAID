@@ -229,7 +229,7 @@ NMF = function(data){
   time = difftime(end, start, units = 'secs')
   
   # plot(res)
-  nclust = res$measures$rank[which.max(res$measures$silhouette.coef)] # confirm!!! ¿max?
+  nclust = res$measures$rank[which.max(res$measures$silhouette.consensus)] # confirm!!! ¿max?
   
   h = coef(res$fit[[nclust-1]])
   labels = apply(h, 2, which.max)

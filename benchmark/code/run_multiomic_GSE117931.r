@@ -16,12 +16,9 @@ source('benchmark/code/cluster_algorithms_multiomics.r')
 exp = read.table('benchmark/extdata/multi-omic/GSE117931/ADEx_data/expression.tsv',
                  header = T, row.names = 1)
 exp = exp[complete.cases(exp),]
-met = read.table('benchmark/extdata/multi-omic/GSE117931/ADEx_data/methylation.tsv',
-                 header = T, row.names = 1)
-met = met[complete.cases(met),]
-require(lumi)
-metm = beta2m(met)   #change B values to M values
 
+met = readRDS('benchmark/extdata/multi-omic/GSE117931/ADEx_data/methylation_M.rds')
+met = met[complete.cases(met),]
 
 
 # Remove these lines!!!
@@ -33,7 +30,7 @@ met = met[1:100,]
 # ===
 run_multiomic(data1 = exp,
               data2 = met,
-              outPath = '',
+              outPath = NULL,
               return = T,
               save = F)
 

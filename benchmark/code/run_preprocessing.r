@@ -28,6 +28,7 @@ for (d in seq_along(datapath)) {
   
   data = na.delete(x)
   data = remove.constant(data)
+  data = lumi::beta2m(data)
   res = MostVariables(data, ntopGenes = 1000)
   res = as.data.frame(res)
   res$Condition = y

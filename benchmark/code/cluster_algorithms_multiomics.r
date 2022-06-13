@@ -1,20 +1,41 @@
+# Utils
+# ===
+
+select_k = function(res, maxK){
+  
+  # Extracted from: https://www.biostars.org/p/198789/
+  Kvec = 2:maxK
+  x1 = 0.1; x2 = 0.9 # threshold defining the intermediate sub-interval
+  PAC = rep(NA,length(Kvec)) 
+  names(PAC) = paste("K=",Kvec,sep="") # from 2 to maxK
+  for(i in Kvec){
+    M = res[[i]]$consensusMatrix
+    Fn = ecdf(M[lower.tri(M)])
+    PAC[i-1] = Fn(x2) - Fn(x1)
+  }
+  # The optimal K
+  optK = Kvec[which.min(PAC)]
+  
+  return(optK)
+  
+}
+
+
+
 # Consensus of k-Means cluster
 # ===
-conCluster.km = function(data1 ,data2){
+conCluster.km = function(data1 ,data2, maxK = 10){
   
   require(ConsensusClusterPlus)
-  stopifnot(rownames(data1) == rownames(data2))
+  stopifnot(colnames(data1) == colnames(data2))
   
-  data1.t = t(data1); rownames(data1.t) = colnames(data1)
-  data1.t = t(data2); rownames(data2.t) = colnames(data2)
-  
-  data_bind = cbind.data.frame(data1.t, data2.t)
+  data_bind = rbind.data.frame(data1, data2)
   data_bind = scale(data_bind)
   
   # Fit model
   start = Sys.time()
-  res = ConsensusClusterPlus(data.t,
-                             maxK = 10,
+  res = ConsensusClusterPlus(data_bind,
+                             maxK = maxK,
                              reps = 1000,
                              pItem = 0.8,
                              pFeature = 1,
@@ -29,7 +50,7 @@ conCluster.km = function(data1 ,data2){
   
   nclust = select_k(res, maxK)
   labels = as.numeric(as.factor(res[[nclust]]$clrs[[1]]))
-  names(labels) = rownames(data)
+  names(labels) = colnames(data_bind)
   
   return(list(time = time,
               nclust = nclust,
@@ -41,21 +62,18 @@ conCluster.km = function(data1 ,data2){
 
 # Consensus of Hierarchical cluster
 # ===
-conCluster.h = function(data){
+conCluster.h = function(data1, data2, maxK = 10){
   
   require(ConsensusClusterPlus)
-  stopifnot(rownames(data1) == rownames(data2))
+  stopifnot(colnames(data1) == colnames(data2))
   
-  data1.t = t(data1); rownames(data1.t) = colnames(data1)
-  data1.t = t(data2); rownames(data2.t) = colnames(data2)
-  
-  data_bind = cbind.data.frame(data1.t, data2.t)
+  data_bind = rbind.data.frame(data1, data2)
   data_bind = scale(data_bind)
   
   # Fit model
   start = Sys.time()
-  res = ConsensusClusterPlus(data.t,
-                             maxK = 10,
+  res = ConsensusClusterPlus(data_bind,
+                             maxK = maxK,
                              reps = 1000,
                              pItem = 0.8,
                              pFeature = 1,
@@ -70,7 +88,7 @@ conCluster.h = function(data){
   
   nclust = select_k(res, maxK)
   labels = as.numeric(as.factor(res[[nclust]]$clrs[[1]]))
-  names(labels) = rownames(data)
+  names(labels) = colnames(data_bind)
   
   return(list(time = time,
               nclust = nclust,
@@ -141,16 +159,16 @@ icluster = function(data1, data2){
 run_multiomic = function(data1, data2, outPath, return = F, save = T){
   
   
-  print(paste0('Runing hierarchical consensus clustering for: ', file))
-  cc.h = conCluster.h(data1, data2)
+  print('Runing hierarchical consensus clustering')
+  cc.h = conCluster.h(data1, data2, maxK = 10)
   
-  print(paste0('Runing K-Means consensus clustering for: ', file))
-  cc.km = conCluster.km(data1, data2)
+  print('Runing K-Means consensus clustering')
+  cc.km = conCluster.km(data1, data2, maxK = 10)
   
-  print(paste0('Runing SNF clustering for: ', file))
+  print('Runing SNF clustering')
   snf = snf(data1, data2)
   
-  print(paste0('Runing iClusterPlust clustering for: ', file))
+  print('Runing iClusterPlust clustering')
   icluster = icluster(data1, data2)
   
   res = list(

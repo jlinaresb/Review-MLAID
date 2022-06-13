@@ -1,29 +1,174 @@
+# Consensus of k-Means cluster
+# ===
+conCluster.km = function(data1 ,data2){
+  
+  require(ConsensusClusterPlus)
+  stopifnot(rownames(data1) == rownames(data2))
+  
+  data1.t = t(data1); rownames(data1.t) = colnames(data1)
+  data1.t = t(data2); rownames(data2.t) = colnames(data2)
+  
+  data_bind = cbind.data.frame(data1.t, data2.t)
+  data_bind = scale(data_bind)
+  
+  # Fit model
+  start = Sys.time()
+  res = ConsensusClusterPlus(data.t,
+                             maxK = 10,
+                             reps = 1000,
+                             pItem = 0.8,
+                             pFeature = 1,
+                             clusterAlg = 'km',
+                             distance = 'euclidean',
+                             seed = 1993,
+                             plot = NULL)
+  # res = calcICL(res)
+  # res = calcICL(res,title="example")
+  end = Sys.time()
+  time = difftime(end, start, units = 'secs')
+  
+  nclust = select_k(res, maxK)
+  labels = as.numeric(as.factor(res[[nclust]]$clrs[[1]]))
+  names(labels) = rownames(data)
+  
+  return(list(time = time,
+              nclust = nclust,
+              labels = labels,
+              fit = res))
+  
+}
+
+
+# Consensus of Hierarchical cluster
+# ===
+conCluster.h = function(data){
+  
+  require(ConsensusClusterPlus)
+  stopifnot(rownames(data1) == rownames(data2))
+  
+  data1.t = t(data1); rownames(data1.t) = colnames(data1)
+  data1.t = t(data2); rownames(data2.t) = colnames(data2)
+  
+  data_bind = cbind.data.frame(data1.t, data2.t)
+  data_bind = scale(data_bind)
+  
+  # Fit model
+  start = Sys.time()
+  res = ConsensusClusterPlus(data.t,
+                             maxK = 10,
+                             reps = 1000,
+                             pItem = 0.8,
+                             pFeature = 1,
+                             clusterAlg = 'hc',
+                             distance = 'pearson',
+                             seed = 1993,
+                             plot = NULL)
+  # res = calcICL(res)
+  # res = calcICL(res,title="example")
+  end = Sys.time()
+  time = difftime(end, start, units = 'secs')
+  
+  nclust = select_k(res, maxK)
+  labels = as.numeric(as.factor(res[[nclust]]$clrs[[1]]))
+  names(labels) = rownames(data)
+  
+  return(list(time = time,
+              nclust = nclust,
+              labels = labels,
+              fit = res))
+  
+}
+
+
+
 # SNF
 # ===
-snf = function(data, K = 20, alpha = 0.5, iters = 30){
+snf = function(data1, data2, K = 20, alpha = 0.5, iters = 30){
   
   require(SNFtool)
-  df = standardNormalization(data)
+  d1 = standardNormalization(data1)
+  d2 = standardNormalization(data2)
   
   start = Sys.time()
-  Dist = SNFtool::dist2(as.matrix(df), as.matrix(df))
-  W = affinityMatrix(Dist, K, alpha)
-  # W = SNF(list(W), K, t = iters)
-  nclust = estimateNumberOfClustersGivenGraph(W, 2:20)[[1]]
+  Dist1 = SNFtool::dist2(as.matrix(d1), as.matrix(d1))
+  Dist2 = SNFtool::dist2(as.matrix(d2), as.matrix(d2))
+  
+  W1 = affinityMatrix(Dist1, K, alpha)
+  W2 = affinityMatrix(Dist2, K, alpha)
+  
+  W = SNF(list(W1, W2), K, t = iters)
+  nclust = estimateNumberOfClustersGivenGraph(W, 2:10)[[1]]
   end = Sys.time()
   time = end - start
   
   return(list(time = time,
               nclust = nclust,
               labels = W))
-  
 }
 
 
 # iClusterPlus
 # ===
-# icluster = function(){
-#   
-#   
-#   
-# }
+require(iClusterPlus)
+icluster = function(data1, data2){
+  
+  # Fitting
+  # ===
+  cv = list()
+  start = Sys.time()
+  for(k in 1:10){
+    cv[[i]] = tune.iClusterPlus(cpus = 15,
+                                dt1 = t(exp),
+                                dt2 = t(met),
+                                type = c('gaussian','gaussian'),
+                                K = k,
+                                n.lambda = 55,
+                                scale.lambda = c(1,1),
+                                maxiter = 20)
+  }
+  start = Sys.time()
+  time = difftime(end, start, units = 'secs')
+  
+  return(list(time = time,
+              fit = cv))
+  
+}
+
+
+
+# Run all
+
+run_multiomic = function(data1, data2, outPath, return = F, save = T){
+  
+  
+  print(paste0('Runing hierarchical consensus clustering for: ', file))
+  cc.h = conCluster.h(data1, data2)
+  
+  print(paste0('Runing K-Means consensus clustering for: ', file))
+  cc.km = conCluster.km(data1, data2)
+  
+  print(paste0('Runing SNF clustering for: ', file))
+  snf = snf(data1, data2)
+  
+  print(paste0('Runing iClusterPlust clustering for: ', file))
+  icluster = icluster(data1, data2)
+  
+  res = list(
+    Consensus.H = cc.h,
+    Consensus.KM = cc.km,
+    SNF = snf,
+    iCluster = icluster
+  )
+  
+  if (save == T){
+    saveRDS(res, file = paste0(outPath, file, '.rds'))
+  }
+  
+  if (return == T) {
+    return(res)
+  }
+  
+}
+
+
+

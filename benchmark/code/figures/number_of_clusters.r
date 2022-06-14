@@ -8,7 +8,7 @@ results = list()
 # i = 1
 for (f in seq_along(files)) {
   data = readRDS(files[f])
-  data = data[-c(3, 4, 8)]
+  # data = data[-c(3, 4, 8)]
   
 
   for (i in seq_along(data)) {
@@ -43,7 +43,7 @@ require(viridis)
 plot_nclust = ggplot(data, aes(datasets, algorithms)) +
   geom_tile(aes(fill = results)) + 
   geom_text(aes(label = round(results, 1))) +
-  scale_fill_gradient(low = viridis(1), high = viridis(4)) +
+  scale_fill_gradient(low = viridis(1), high = viridis(8)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 plot_nclust

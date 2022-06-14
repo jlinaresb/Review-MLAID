@@ -7,7 +7,7 @@ res = list()
 # f = 1
 for (f in seq_along(files)) {
   data = readRDS(files[f])
-  data = data[-c(3, 4, 8)]
+  # data = data[-c(3, 4, 8)]
   
   
   for (i in seq_along(data)) {
@@ -55,3 +55,35 @@ for (i in seq_along(res)) {
                             title = name)
 }
 names(corrplots) = names(res)
+
+
+# 
+require(ggcorrplot)
+require(viridis)
+plots = list()
+for (i in seq_along(corrplots)) {
+  toPlot = corrplots[[i]]$corr
+  
+  toPlot[which(is.nan(toPlot))] = 0
+  
+  plots[[i]] = ggcorrplot(toPlot,
+                          hc.order = T,
+                          type = 'lower',
+                          lab = T,
+                          insig = 'blank',
+                          title = names(corrplots)[i],
+                          show.legend = F,
+                          show.diag = F, 
+                          tl.cex = 4,
+                          lab_size = 2, 
+                          digits = 1,
+                          colors = c(viridis(1),viridis(2),viridis(3)))
+  
+}
+
+ggarrange(plots[[6]], plots[[7]], plots[[8]],
+          plots[[1]], plots[[2]], plots[[3]], 
+          plots[[4]], plots[[5]],
+          ncol = 3, nrow = 4, 
+          common.legend = T)
+

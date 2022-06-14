@@ -135,7 +135,7 @@ icluster = function(data1, data2){
   cv = list()
   start = Sys.time()
   for(k in 1:10){
-    cv[[i]] = tune.iClusterPlus(cpus = 15,
+    cv[[k]] = tune.iClusterPlus(cpus = 15,
                                 dt1 = t(exp),
                                 dt2 = t(met),
                                 type = c('gaussian','gaussian'),
@@ -144,7 +144,7 @@ icluster = function(data1, data2){
                                 scale.lambda = c(1,1),
                                 maxiter = 20)
   }
-  start = Sys.time()
+  end = Sys.time()
   time = difftime(end, start, units = 'secs')
   
   return(list(time = time,

@@ -1,4 +1,4 @@
-# Run GSE117931
+# Run GSE82221
 # ===
 
 cesga = T
@@ -13,11 +13,11 @@ source('benchmark/code/cluster_algorithms_multiomics.r')
 
 
 # Load data
-exp = readRDS('benchmark/extdata/multi-omic/GSE117931/filtered/expression.rds')
+exp = readRDS('benchmark/extdata/multi-omic/GSE82221/filtered/expression.rds')
 exp = exp[, complete.cases(exp)]
 exp = as.data.frame(t(exp))
 
-met = readRDS('benchmark/extdata/multi-omic/GSE117931/filtered/methylation.rds')
+met = readRDS('benchmark/extdata/multi-omic/GSE82221/filtered/methylation.rds')
 met = met[, complete.cases(met)]
 met = as.data.frame(t(met))
 

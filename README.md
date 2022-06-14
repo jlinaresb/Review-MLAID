@@ -3,9 +3,9 @@
 
 ## Current stage: 
 ![pb](https://progress-bar.dev/100/?title=Query)
-![pb](https://progress-bar.dev/20/?title=QA)
-![pb](https://progress-bar.dev/0/?title=InclusionExclusion)
-![pb](https://progress-bar.dev/0/?title=Classification)
+![pb](https://progress-bar.dev/100/?title=QA)
+![pb](https://progress-bar.dev/100/?title=InclusionExclusion)
+![pb](https://progress-bar.dev/100/?title=Classification)
 ![pb](https://progress-bar.dev/0/?title=Analysis)
 ![pb](https://progress-bar.dev/0/?title=Redaction)
 

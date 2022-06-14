@@ -10,6 +10,7 @@ if (cesga == T) {
 }
 
 source('benchmark/code/cluster_algorithms.r')
+source('benchmark/code/utils.r')
 
 exp_path = 'benchmark/extdata/single-omic/transcriptomic/filtered/'             # Transcriptomic
 epi_path = 'benchmark/extdata/single-omic/epigenomic/filtered/'                 # Epigenomic

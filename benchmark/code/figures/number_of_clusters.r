@@ -46,8 +46,8 @@ plot_nclust = ggplot(data, aes(datasets, algorithms)) +
   scale_fill_gradient(low = viridis(1), high = viridis(4)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
+plot_nclust
 
 
 
-
-ggarrange(plot_time, plot_nclust, nrow = 2, ncol = 1)
+# ggarrange(plot_time, plot_nclust, nrow = 2, ncol = 1)

@@ -30,7 +30,8 @@ met = as.data.frame(t(met))
 # ===
 run_multiomic(data1 = exp,
               data2 = met,
-              outPath = NULL,
+              outPath = 'benchmark/results/',
+              file = 'multiomic_GSE117931',
               return = F,
               save = T)
 

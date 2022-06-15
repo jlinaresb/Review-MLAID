@@ -159,7 +159,7 @@ icluster = function(data1, data2){
 
 # Run all
 
-run_multiomic = function(data1, data2, outPath, return = F, save = T){
+run_multiomic = function(data1, data2, outPath, file, return = F, save = T){
   
   
   print('Runing hierarchical consensus clustering')

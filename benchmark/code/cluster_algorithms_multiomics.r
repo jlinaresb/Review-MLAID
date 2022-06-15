@@ -103,6 +103,9 @@ conCluster.h = function(data1, data2, maxK = 10){
 # ===
 snf = function(data1, data2, K = 20, alpha = 0.5, iters = 30){
   
+  data1 = t(data1)
+  data2 = t(data2)
+  
   require(SNFtool)
   d1 = standardNormalization(data1)
   d2 = standardNormalization(data2)

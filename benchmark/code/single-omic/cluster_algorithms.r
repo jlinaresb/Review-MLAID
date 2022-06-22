@@ -49,7 +49,7 @@ SOM = function(data){
   
   # Extracted from: https://www.shanelynn.ie/self-organising-maps-for-customer-segmentation-using-r/
   require(kohonen)
-  df = scale(data)
+  df = scale(t(data))
   
   dim = mapping(nrow(df))
   
@@ -85,29 +85,20 @@ SOM = function(data){
 conCluster.km = function(data, maxK){
   
   require(ConsensusClusterPlus)
-  data.t = t(data); rownames(data.t) = colnames(data)
   
-  # Select most variable genes
-  # mads = apply(data.t, 1, mad)
-  # data.t = data.t[rev(order(mads))[1:5000], ]
-  
-  # Scaling
-  # data.t = sweep(data.t, 1, apply(data.t, 1, median, na.rm = T))
-  
-  df = scale(data)
+  data = scale(data)
   
   start = Sys.time()
-  res = ConsensusClusterPlus(data.t,
-                                   maxK = maxK,
-                                   reps = 1000,
-                                   pItem = 0.8,
-                                   pFeature = 1,
-                                   clusterAlg = 'km',
-                                   distance = 'euclidean',
-                                   seed = 1993,
-                                   plot = NULL)
-  # res = calcICL(res)
-  # res = calcICL(res,title="example")
+  res = ConsensusClusterPlus(data,
+                             maxK = maxK,
+                             reps = 1000,
+                             pItem = 0.8,
+                             pFeature = 1,
+                             clusterAlg = 'km',
+                             distance = 'euclidean',
+                             seed = 1993,
+                             plot = NULL)
+
   end = Sys.time()
   time = difftime(end, start, units = 'secs')
   
@@ -129,19 +120,11 @@ conCluster.km = function(data, maxK){
 conCluster.h = function(data, maxK){
   
   require(ConsensusClusterPlus)
-  data.t = t(data); rownames(data.t) = colnames(data)
-  
-  # Select most variable genes
-  # mads = apply(data.t, 1, mad)
-  # data.t = data.t[rev(order(mads))[1:5000], ]
-  
-  # Scaling
-  # data.t = sweep(data.t, 1, apply(data.t, 1, median, na.rm = T))
-  
-  df = scale(data)
+
+  data = scale(data)
   
   start = Sys.time()
-  res = ConsensusClusterPlus(data.t,
+  res = ConsensusClusterPlus(data,
                              maxK = maxK,
                              reps = 1000,
                              pItem = 0.8,
@@ -150,8 +133,7 @@ conCluster.h = function(data, maxK){
                              distance = 'pearson',
                              seed = 1993,
                              plot = NULL)
-  # res = calcICL(res)
-  # res = calcICL(res,title="example")
+
   end = Sys.time()
   time = difftime(end, start, units = 'secs')
   
@@ -174,18 +156,19 @@ NMF = function(data){
   
   require(NMF)
   
-  normalize <- function(x, na.rm = TRUE) {
-    return((x- min(x)) /(max(x)-min(x)))
-  }
+  # normalize <- function(x, na.rm = TRUE) {
+  #   return((x- min(x)) /(max(x)-min(x)))
+  # }
   
-  data = as.data.frame(apply(data, 2, function(x) normalize(x)))
+  # data = as.data.frame(apply(data, 2, function(x) normalize(x)))
   
-  data.t = t(data); rownames(data.t) = colnames(data)
   # meth <- nmfAlgorithm(version='R')
   # meth <- c(names(meth), meth)
   
+  data = t(data)
+  
   start = Sys.time()
-  res = nmf(data.t, 
+  res = nmf(data, 
             rank = c(2:10),
             method = 'brunet',
             nrun = 30,
@@ -213,7 +196,7 @@ NMF = function(data){
 mclust = function(data){
   
   require(mclust)
-  data = data
+  data = t(data)
   
   start = Sys.time()
   res = mclust::Mclust(data,

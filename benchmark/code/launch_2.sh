@@ -9,4 +9,4 @@
 #SBATCH --mail-type=BEGIN,END
 
 module load cesga/2018 gcc/6.4.0 R/4.0.2
-Rscript /mnt/netapp2/Store_uni/home/ulc/co/jlb/git/Review-MLAID/benchmark/code/run_benchmark_trans.r
+Rscript /mnt/netapp2/Store_uni/home/ulc/co/jlb/git/Review-MLAID/benchmark/code/single-omic/run_benchmark_trans.r

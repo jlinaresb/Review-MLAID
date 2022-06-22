@@ -1,4 +1,4 @@
-cesga = F
+cesga = T
 
 if (cesga == T) {
   setwd('/mnt/netapp2/Store_uni/home/ulc/co/jlb/git/Review-MLAID/')
@@ -32,8 +32,8 @@ eset1 = ExpressionSet(
 
 eset1.f = genefilter::varFilter(eset1, var.cutoff = 0.7)
 
-saveRDS(eset1, file = 'benchmark/data/eset_GSE11907_T1D_GPL96_complete.rds')
-saveRDS(eset1.f, file = 'benchmark/data/eset_GSE11907_T1D_GPL96_filtered.rds')
+saveRDS(eset1, file = 'benchmark/data/single-omic/eset_GSE11907_T1D_GPL96_complete.rds')
+saveRDS(eset1.f, file = 'benchmark/data/single-omic/eset_GSE11907_T1D_GPL96_filtered.rds')
 
 
 # GSE45291_RA
@@ -54,8 +54,8 @@ eset2 = ExpressionSet(
 
 eset2.f = genefilter::varFilter(eset2, var.cutoff = 0.7)
 
-saveRDS(eset2, file = 'benchmark/data/eset_GSE45291_RA_complete.rds')
-saveRDS(eset2.f, file = 'benchmark/data/eset_GSE45291_RA_filtered.rds')
+saveRDS(eset2, file = 'benchmark/data/single-omic/eset_GSE45291_RA_complete.rds')
+saveRDS(eset2.f, file = 'benchmark/data/single-omic/eset_GSE45291_RA_filtered.rds')
 
 
 
@@ -77,8 +77,8 @@ eset3 = ExpressionSet(
 
 eset3.f = genefilter::varFilter(eset3, var.cutoff = 0.7)
 
-saveRDS(eset3, file = 'benchmark/data/eset_GSE61635_complete.rds')
-saveRDS(eset3.f, file = 'benchmark/data/eset_GSE61635_filtered.rds')
+saveRDS(eset3, file = 'benchmark/data/single-omic/eset_GSE61635_complete.rds')
+saveRDS(eset3.f, file = 'benchmark/data/single-omic/eset_GSE61635_filtered.rds')
 
 
 
@@ -106,8 +106,8 @@ eset1 = ExpressionSet(
 
 eset1.f = genefilter::varFilter(eset1, var.cutoff = 0.01)
 
-saveRDS(eset1, file = 'benchmark/data/eset_GSE42861_complete.rds')
-saveRDS(eset1.f, file = 'benchmark/data/eset_GSE42861_filtered.rds')
+saveRDS(eset1, file = 'benchmark/data/single-omic/eset_GSE42861_complete.rds')
+saveRDS(eset1.f, file = 'benchmark/data/single-omic/eset_GSE42861_filtered.rds')
 
 
 
@@ -131,8 +131,8 @@ eset2 = ExpressionSet(
 
 eset2.f = genefilter::varFilter(eset2, var.cutoff = 0.01)
 
-saveRDS(eset2, file = 'benchmark/data/eset_GSE56606_Monocytes_complete.rds')
-saveRDS(eset2.f, file = 'benchmark/data/eset_GSE56606_Monocytes_filtered.rds')
+saveRDS(eset2, file = 'benchmark/data/single-omic/eset_GSE56606_Monocytes_complete.rds')
+saveRDS(eset2.f, file = 'benchmark/data/single-omic/eset_GSE56606_Monocytes_filtered.rds')
 
 
 # GSE59250_B_cells
@@ -155,8 +155,8 @@ eset3 = ExpressionSet(
 
 eset3.f = genefilter::varFilter(eset3, var.cutoff = 0.01)
 
-saveRDS(eset3, file = 'benchmark/data/eset_GSE59250_B_cells_complete.rds')
-saveRDS(eset3.f, file = 'benchmark/data/eset_GSE59250_B_cells_filtered.rds')
+saveRDS(eset3, file = 'benchmark/data/single-omic/eset_GSE59250_B_cells_complete.rds')
+saveRDS(eset3.f, file = 'benchmark/data/single-omic/eset_GSE59250_B_cells_filtered.rds')
 
 
 
@@ -188,8 +188,8 @@ morgan = tax_glom(morgan, 'Rank6')
 
 morgan.f = prune_taxa(filter_taxa(morgan, flist, prune=FALSE), morgan)
 
-saveRDS(morgan, file = 'benchmark/data/eset_morgan_complete.rds')
-saveRDS(morgan.f, file = 'benchmark/data/eset_morgan_filtered.rds')
+saveRDS(morgan, file = 'benchmark/data/single-omic/eset_morgan_complete.rds')
+saveRDS(morgan.f, file = 'benchmark/data/single-omic/eset_morgan_filtered.rds')
 
 
 
@@ -216,7 +216,7 @@ gevers = tax_glom(gevers, 'Rank6')
 
 gevers.f = prune_taxa(filter_taxa(gevers, flist, prune=FALSE), gevers)
 
-saveRDS(gevers, file = 'benchmark/data/eset_gevers_complete.rds')
-saveRDS(gevers.f, file = 'benchmark/data/eset_gevers_filtered.rds')
+saveRDS(gevers, file = 'benchmark/data/single-omic/eset_gevers_complete.rds')
+saveRDS(gevers.f, file = 'benchmark/data/single-omic/eset_gevers_filtered.rds')
 
 

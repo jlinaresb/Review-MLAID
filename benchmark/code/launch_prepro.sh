@@ -2,7 +2,7 @@
 
 #SBATCH -p shared
 #SBATCH --qos shared
-#SBATCH -t 10:00:00
+#SBATCH -t 01:00:00
 #SBATCH --mem=64GB
 #SBATCH -n 15
 #SBATCH --mail-user=joselb1993@gmail.com

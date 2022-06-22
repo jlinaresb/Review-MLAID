@@ -11,11 +11,11 @@ match.condition = function(datapath, omic = 'transcriptomic'){
   
   if (omic == 'transcriptomic') {
     meta = read.delim2(
-      '~/git/Review-MLAID/benchmark/extdata/single-omic/transcriptomic/metadata.tsv',
+      'benchmark/extdata/single-omic/transcriptomic/metadata.tsv',
       header = T)
   } else if (omic == 'epigenomic'){
     meta = read.delim2(
-      '~/git/Review-MLAID/benchmark/extdata/single-omic/epigenomic/metadata.tsv',
+      'benchmark/extdata/single-omic/epigenomic/metadata.tsv',
       header = T)
   } else if (omic == 'metagenomic'){
     meta = NULL

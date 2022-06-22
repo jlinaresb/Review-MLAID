@@ -1,6 +1,6 @@
 # Run GSE117931
 # ===
-cesga = F
+cesga = T
 
 if (cesga == T) {
   setwd('/mnt/netapp2/Store_uni/home/ulc/co/jlb/git/Review-MLAID')
@@ -26,7 +26,7 @@ data2 = exprs(dat)
 # ===
 run_multiomic(data1 = data1,
               data2 = data2,
-              outPath = 'benchmark/results/',
+              outPath = 'benchmark/results/multi-omic/',
               file = 'multiomic_GSE117931',
               return = F,
               save = T)

@@ -19,7 +19,7 @@ file1 = list.files(path, pattern = 'GSE82221_expression_filtered')
 dat = readRDS(paste0(path, file1))
 data1 = exprs(dat)
 
-file2 = list.files(path, patter = 'GSE82221_methylation_filtered')
+file2 = list.files(path, pattern = 'GSE82221_methylation_filtered')
 dat = readRDS(paste0(path, file2))
 data2 = exprs(dat)
 
@@ -27,7 +27,7 @@ data2 = exprs(dat)
 # ===
 run_multiomic(data1 = data1,
               data2 = data2,
-              outPath = 'benchmark/results/',
+              outPath = 'benchmark/results/multi-omic/',
               file = 'multiomic_GSE82221',
               return = F,
               save = T)

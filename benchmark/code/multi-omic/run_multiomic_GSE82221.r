@@ -1,7 +1,7 @@
 # Run GSE82221
 # ===
 
-cesga = T
+cesga = F
 
 if (cesga == T) {
   setwd('/mnt/netapp2/Store_uni/home/ulc/co/jlb/git/Review-MLAID')
@@ -9,30 +9,29 @@ if (cesga == T) {
   setwd('~/git/Review-MLAID/')
 }
 
-source('benchmark/code/cluster_algorithms_multiomics.r')
+source('benchmark/code/multi-omic/cluster_algorithms_multiomics.r')
 
 
 # Load data
-exp = readRDS('benchmark/extdata/multi-omic/GSE82221/filtered/expression.rds')
-exp = exp[, complete.cases(exp)]
-exp = as.data.frame(t(exp))
+# ===
+path = 'benchmark/data/multi-omic/'
+file1 = list.files(path, pattern = 'GSE82221_expression_filtered')
+dat = readRDS(paste0(path, file1))
+data1 = exprs(dat)
 
-met = readRDS('benchmark/extdata/multi-omic/GSE82221/filtered/methylation.rds')
-met = met[, complete.cases(met)]
-met = as.data.frame(t(met))
-
-# Remove these lines!!!
-# exp = exp[1:100,]
-# met = met[1:100,]
-######
+file2 = list.files(path, patter = 'GSE82221_methylation_filtered')
+dat = readRDS(paste0(path, file2))
+data2 = exprs(dat)
 
 # Run the models
 # ===
-run_multiomic(data1 = exp,
-              data2 = met,
+run_multiomic(data1 = data1,
+              data2 = data2,
               outPath = 'benchmark/results/',
               file = 'multiomic_GSE82221',
               return = F,
               save = T)
+
+
 
 

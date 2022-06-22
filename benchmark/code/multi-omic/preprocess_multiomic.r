@@ -1,12 +1,16 @@
 # Preprocessing multi-omic
 # ====
-cesga = T
+cesga = F
 
 if (cesga == T) {
   setwd('/mnt/netapp2/Store_uni/home/ulc/co/jlb/git/Review-MLAID/')
 } else {
   setwd('~/git/Review-MLAID/')
 }
+
+
+require(data.table)
+require(SummarizedExperiment)
 
 # Transcriptomics
 # ===
@@ -38,7 +42,7 @@ assay = fread('benchmark/extdata/multi-omic/GSE82221/expression.tsv',
 rownames(assay) = assay[,1]; assay = assay[, -1]
 
 meta = read.delim2(
-  'benchmark/extdata/multi-omic/GSE82221/ADEx_data/metadata.tsv',
+  'benchmark/extdata/multi-omic/GSE82221/metadata.tsv',
   header = T)
 meta = meta[match(colnames(assay), meta$Sample),]
 rownames(meta) = meta$Sample
@@ -74,7 +78,7 @@ eset1 = ExpressionSet(
   phenoData = AnnotatedDataFrame(meta)
 )
 
-eset1.f = genefilter::varFilter(eset1, var.cutoff = 0.01)
+eset1.f = genefilter::varFilter(eset1, var.cutoff = 0.99)
 
 saveRDS(eset1, file = 'benchmark/data/multi-omic/eset_GSE117931_methylation_complete.rds')
 saveRDS(eset1.f, file = 'benchmark/data/multi-omic/eset_GSE117931_methylation_filtered.rds')
@@ -98,7 +102,7 @@ eset1 = ExpressionSet(
   phenoData = AnnotatedDataFrame(meta)
 )
 
-eset1.f = genefilter::varFilter(eset1, var.cutoff = 0.01)
+eset1.f = genefilter::varFilter(eset1, var.cutoff = 0.99)
 
 saveRDS(eset1, file = 'benchmark/data/multi-omic/eset_GSE82221_methylation_complete.rds')
 saveRDS(eset1.f, file = 'benchmark/data/multi-omic/eset_GSE82221_methylation_filtered.rds')

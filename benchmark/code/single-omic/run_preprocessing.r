@@ -159,8 +159,41 @@ saveRDS(eset3, file = 'benchmark/data/eset_GSE59250_B_cells_complete.rds')
 saveRDS(eset3.f, file = 'benchmark/data/eset_GSE59250_B_cells_filtered.rds')
 
 
+
+# Metagenomics
+# ======
+require(phyloseq)
+flist = filterfun(kOverA(5, 2e-05))
+
+# Morgan
+otuPath = 'benchmark/extdata/single-omic/metagenomic/morgan/otutable.txt'
+clinPath = 'benchmark/extdata/single-omic/metagenomic/morgan/clinical.txt'
+taxPath = 'benchmark/extdata/single-omic/metagenomic/morgan/TaxonomyTable.rds'
+
+otu = read.delim2(otuPath, header = T, sep = '\t')
+clin = read.delim2(clinPath, header = T, sep = '\t')
+rownames(clin) = paste0('X', clin$X.SampleID)
+tax = readRDS(taxPath)
+
+TAXA = tax_table(as.matrix(tax))
+otu = subset(otu, select = -c(X.OTU.ID))
+rownames(otu) = rownames(tax)
+otu = as.matrix(otu)
+OTU = otu_table(otu, taxa_are_rows = T)
+
+CLIN = sample_data(clin)
+
+morgan = phyloseq(OTU, CLIN, TAXA)
+morgan = tax_glom(morgan, 'Rank6')
+
+morgan.f = prune_taxa(filter_taxa(morgan, flist, prune=FALSE), morgan)
+
+saveRDS(morgan, file = 'benchmark/data/eset_morgan_complete.rds')
+saveRDS(morgan.f, file = 'benchmark/data/eset_morgan_filtered.rds')
+
+
+
 # Gevers
-# ===
 otuPath = 'benchmark/extdata/single-omic/metagenomic/gevers/otutable.txt'
 clinPath = 'benchmark/extdata/single-omic/metagenomic/gevers/clinical.txt'
 taxPath = 'benchmark/extdata/single-omic/metagenomic/gevers/TaxonomyTable.rds'
@@ -181,22 +214,9 @@ CLIN = sample_data(clin)
 gevers = phyloseq(OTU, CLIN, TAXA)
 gevers = tax_glom(gevers, 'Rank6')
 
-rm(list = setdiff(ls(), c('morgan', 'gevers')))
+gevers.f = prune_taxa(filter_taxa(gevers, flist, prune=FALSE), gevers)
 
+saveRDS(gevers, file = 'benchmark/data/eset_gevers_complete.rds')
+saveRDS(gevers.f, file = 'benchmark/data/eset_gevers_filtered.rds')
 
-# Convert to data.frame
-# ===
-
-morgan_ = cbind.data.frame(
-  t(morgan@otu_table@.Data),
-  Condition = get_variable(morgan, 'Var')
-)
-
-gevers_ = cbind.data.frame(
-  t(gevers@otu_table@.Data),
-  Condition = get_variable(gevers, 'Var')
-)
-
-saveRDS(morgan_, file = 'benchmark/extdata/single-omic/metagenomic/filtered/morgan.rds')
-saveRDS(gevers_, file = 'benchmark/extdata/single-omic/metagenomic/filtered/gevers.rds')
 

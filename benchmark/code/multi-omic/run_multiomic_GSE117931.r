@@ -22,7 +22,7 @@ file2 = list.files(path, patter = 'GSE117931_methylation_filtered')
 dat = readRDS(paste0(path, file2))
 data2 = exprs(dat)
 
-# Run the models
+# Run the models with multi-omic
 # ===
 run_multiomic(data1 = data1,
               data2 = data2,
@@ -32,3 +32,16 @@ run_multiomic(data1 = data1,
               save = T)
 
 
+# Run models with single-omic
+# ===
+data = list(
+  expression = data1,
+  methylation = data2
+)
+
+for (i in seq_along(data)) {
+  runall(data[[i]],
+         file = paste0('GSE117931_', names(data)[i]),
+         outPath = 'benchmark/results/multi-omic/',
+         return = F, save = T)
+}

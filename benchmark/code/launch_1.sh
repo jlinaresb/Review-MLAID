@@ -1,7 +1,7 @@
 #!/bin/bash
 
-#SBATCH -p shared
-#SBATCH --qos shared
+#SBATCH -p cola-corta
+#SBATCH --qos default
 #SBATCH -t 10:00:00
 #SBATCH --mem=64GB
 #SBATCH -n 15

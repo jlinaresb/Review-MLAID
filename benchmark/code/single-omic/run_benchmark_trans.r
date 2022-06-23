@@ -1,6 +1,6 @@
 # Benchmark in transcriptomic data
 # ===
-cesga = F
+cesga = T
 
 if (cesga == T) {
   setwd('/mnt/netapp2/Store_uni/home/ulc/co/jlb/git/Review-MLAID')

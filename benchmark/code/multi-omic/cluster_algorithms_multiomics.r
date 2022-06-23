@@ -1,26 +1,7 @@
 # Utils
 # ===
 require(Biobase)
-
-select_k = function(res, maxK){
-  
-  # Extracted from: https://www.biostars.org/p/198789/
-  Kvec = 2:maxK
-  x1 = 0.1; x2 = 0.9 # threshold defining the intermediate sub-interval
-  PAC = rep(NA,length(Kvec)) 
-  names(PAC) = paste("K=",Kvec,sep="") # from 2 to maxK
-  for(i in Kvec){
-    M = res[[i]]$consensusMatrix
-    Fn = ecdf(M[lower.tri(M)])
-    PAC[i-1] = Fn(x2) - Fn(x1)
-  }
-  # The optimal K
-  optK = Kvec[which.min(PAC)]
-  
-  return(optK)
-  
-}
-
+source('/mnt/netapp2/Store_uni/home/ulc/co/jlb/git/Review-MLAID/benchmark/code/utils.r')
 
 
 # Consensus of k-Means cluster
@@ -140,8 +121,8 @@ icluster = function(data1, data2){
   start = Sys.time()
   for(k in 1:10){
     cv[[k]] = tune.iClusterPlus(cpus = 15,
-                                dt1 = t(exp),
-                                dt2 = t(met),
+                                dt1 = t(data1),
+                                dt2 = t(data2),
                                 type = c('gaussian','gaussian'),
                                 K = k,
                                 n.lambda = 55,

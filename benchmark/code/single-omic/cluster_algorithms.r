@@ -4,25 +4,8 @@
 # Utils
 # ===
 require(Biobase)
+source('/mnt/netapp2/Store_uni/home/ulc/co/jlb/git/Review-MLAID/benchmark/code/utils.r')
 
-select_k = function(res, maxK){
-  
-  # Extracted from: https://www.biostars.org/p/198789/
-  Kvec = 2:maxK
-  x1 = 0.1; x2 = 0.9 # threshold defining the intermediate sub-interval
-  PAC = rep(NA,length(Kvec)) 
-  names(PAC) = paste("K=",Kvec,sep="") # from 2 to maxK
-  for(i in Kvec){
-    M = res[[i]]$consensusMatrix
-    Fn = ecdf(M[lower.tri(M)])
-    PAC[i-1] = Fn(x2) - Fn(x1)
-  }
-  # The optimal K
-  optK = Kvec[which.min(PAC)]
-  
-  return(optK)
-  
-}
 
 # K-means clustering
 # ===
@@ -127,7 +110,7 @@ conCluster.km = function(data, maxK){
   
   nclust = select_k(res, maxK)
   labels = as.numeric(as.factor(res[[nclust]]$clrs[[1]]))
-  names(labels) = rownames(data)
+  names(labels) = colnames(data)
   
   return(list(time = time,
               nclust = nclust,
@@ -162,7 +145,7 @@ conCluster.h = function(data, maxK){
   
   nclust = select_k(res, maxK)
   labels = as.numeric(as.factor(res[[nclust]]$clrs[[1]]))
-  names(labels) = rownames(data)
+  names(labels) = colnames(data)
   
   return(list(time = time,
               nclust = nclust,

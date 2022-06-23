@@ -8,6 +8,7 @@ if (cesga == T) {
   setwd('~/git/Review-MLAID/')
 }
 
+source('benchmark/code/single-omic/cluster_algorithms.r')
 source('benchmark/code/multi-omic/cluster_algorithms_multiomics.r')
 
 

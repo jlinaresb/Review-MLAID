@@ -1,5 +1,6 @@
 # Utils
 # ===
+require(Biobase)
 
 select_k = function(res, maxK){
   

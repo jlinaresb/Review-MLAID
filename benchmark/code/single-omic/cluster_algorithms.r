@@ -162,12 +162,12 @@ NMF = function(data){
   
   require(NMF)
   
-  # normalize <- function(x, na.rm = TRUE) {
-  #   return((x- min(x)) /(max(x)-min(x)))
-  # }
+  normalize <- function(x, na.rm = TRUE) {
+   return((x- min(x)) /(max(x)-min(x)))
+  }
   
-  # data = as.data.frame(apply(data, 2, function(x) normalize(x)))
-  
+  data = as.data.frame(t(apply(data, 1, function(x) normalize(x))))
+
   # meth <- nmfAlgorithm(version='R')
   # meth <- c(names(meth), meth)
   

@@ -3,7 +3,7 @@
 #SBATCH -p cola-corta
 #SBATCH --qos default
 #SBATCH -t 10:00:00
-#SBATCH --mem=64GB
+#SBATCH --mem=100GB
 #SBATCH -n 15
 #SBATCH --mail-user=joselb1993@gmail.com
 #SBATCH --mail-type=BEGIN,END

@@ -28,7 +28,7 @@ eset1 = ExpressionSet(
   phenoData = AnnotatedDataFrame(meta)
 )
 
-eset1.f = genefilter::varFilter(eset1, var.cutoff = 0.7)
+eset1.f = genefilter::varFilter(eset1, filterByQuantile = F, var.cutoff = 0.7)
 
 saveRDS(eset1, file = 'benchmark/data/single-omic/exp_GSE11907_T1D_GPL96_complete.rds')
 saveRDS(eset1.f, file = 'benchmark/data/single-omic/exp_GSE11907_T1D_GPL96_filtered.rds')
@@ -50,7 +50,7 @@ eset2 = ExpressionSet(
   phenoData = AnnotatedDataFrame(meta)
 )
 
-eset2.f = genefilter::varFilter(eset2, var.cutoff = 0.7)
+eset2.f = genefilter::varFilter(eset2, filterByQuantile = F, var.cutoff = 0.7)
 
 saveRDS(eset2, file = 'benchmark/data/single-omic/exp_GSE45291_RA_complete.rds')
 saveRDS(eset2.f, file = 'benchmark/data/single-omic/exp_GSE45291_RA_filtered.rds')
@@ -73,7 +73,7 @@ eset3 = ExpressionSet(
   phenoData = AnnotatedDataFrame(meta)
 )
 
-eset3.f = genefilter::varFilter(eset3, var.cutoff = 0.7)
+eset3.f = genefilter::varFilter(eset3, filterByQuantile = F, var.cutoff = 0.7)
 
 saveRDS(eset3, file = 'benchmark/data/single-omic/exp_GSE61635_complete.rds')
 saveRDS(eset3.f, file = 'benchmark/data/single-omic/exp_GSE61635_filtered.rds')
@@ -102,7 +102,7 @@ eset1 = ExpressionSet(
   phenoData = AnnotatedDataFrame(meta)
 )
 
-eset1.f = genefilter::varFilter(eset1, var.cutoff = 0.99)
+eset1.f = genefilter::varFilter(eset1, filterByQuantile = F, var.cutoff = 0.99)
 
 saveRDS(eset1, file = 'benchmark/data/single-omic/epi_GSE42861_complete.rds')
 saveRDS(eset1.f, file = 'benchmark/data/single-omic/epi_GSE42861_filtered.rds')
@@ -127,7 +127,7 @@ eset2 = ExpressionSet(
   phenoData = AnnotatedDataFrame(meta)
 )
 
-eset2.f = genefilter::varFilter(eset2, var.cutoff = 0.99)
+eset2.f = genefilter::varFilter(eset2, filterByQuantile = F, var.cutoff = 0.99)
 
 saveRDS(eset2, file = 'benchmark/data/single-omic/epi_GSE56606_Monocytes_complete.rds')
 saveRDS(eset2.f, file = 'benchmark/data/single-omic/epi_GSE56606_Monocytes_filtered.rds')
@@ -151,7 +151,7 @@ eset3 = ExpressionSet(
   phenoData = AnnotatedDataFrame(meta)
 )
 
-eset3.f = genefilter::varFilter(eset3, var.cutoff = 0.99)
+eset3.f = genefilter::varFilter(eset3, filterByQuantile = F, var.cutoff = 0.99)
 
 saveRDS(eset3, file = 'benchmark/data/single-omic/epi_GSE59250_B_cells_complete.rds')
 saveRDS(eset3.f, file = 'benchmark/data/single-omic/epi_GSE59250_B_cells_filtered.rds')

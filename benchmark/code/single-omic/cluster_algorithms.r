@@ -171,8 +171,6 @@ NMF = function(data){
   # meth <- nmfAlgorithm(version='R')
   # meth <- c(names(meth), meth)
   
-  data = t(data)
-  
   start = Sys.time()
   res = nmf(data, 
             rank = c(2:10),

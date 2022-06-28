@@ -30,7 +30,7 @@ eset1 = ExpressionSet(
   phenoData = AnnotatedDataFrame(meta)
 )
 
-eset1.f = genefilter::varFilter(eset1, var.cutoff = 0.7)
+eset1.f = genefilter::varFilter(eset1, filterByQuantile = F, var.cutoff = 0.7)
 
 saveRDS(eset1, file = 'benchmark/data/multi-omic/eset_GSE117931_expression_complete.rds')
 saveRDS(eset1.f, file = 'benchmark/data/multi-omic/eset_GSE117931_expression_filtered.rds')
@@ -52,7 +52,7 @@ eset1 = ExpressionSet(
   phenoData = AnnotatedDataFrame(meta)
 )
 
-eset1.f = genefilter::varFilter(eset1, var.cutoff = 0.7)
+eset1.f = genefilter::varFilter(eset1, filterByQuantile = F, var.cutoff = 0.7)
 
 saveRDS(eset1, file = 'benchmark/data/multi-omic/eset_GSE82221_expression_complete.rds')
 saveRDS(eset1.f, file = 'benchmark/data/multi-omic/eset_GSE82221_expression_filtered.rds')
@@ -78,7 +78,7 @@ eset1 = ExpressionSet(
   phenoData = AnnotatedDataFrame(meta)
 )
 
-eset1.f = genefilter::varFilter(eset1, var.cutoff = 0.99)
+eset1.f = genefilter::varFilter(eset1, filterByQuantile = F, var.cutoff = 0.99)
 
 saveRDS(eset1, file = 'benchmark/data/multi-omic/eset_GSE117931_methylation_complete.rds')
 saveRDS(eset1.f, file = 'benchmark/data/multi-omic/eset_GSE117931_methylation_filtered.rds')
@@ -102,7 +102,7 @@ eset1 = ExpressionSet(
   phenoData = AnnotatedDataFrame(meta)
 )
 
-eset1.f = genefilter::varFilter(eset1, var.cutoff = 0.99)
+eset1.f = genefilter::varFilter(eset1, filterByQuantile = F, var.cutoff = 0.99)
 
 saveRDS(eset1, file = 'benchmark/data/multi-omic/eset_GSE82221_methylation_complete.rds')
 saveRDS(eset1.f, file = 'benchmark/data/multi-omic/eset_GSE82221_methylation_filtered.rds')

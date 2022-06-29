@@ -1,4 +1,4 @@
-setwd('~/git/Review-MLAID/benchmark/results/')
+setwd('~/git/Review-MLAID/benchmark/results/single-omic/')
 
 files = list.files()
 time = list()
@@ -7,8 +7,7 @@ res = list()
 # f = 1
 for (f in seq_along(files)) {
   data = readRDS(files[f])
-  # data = data[-c(3, 4, 8)]
-  
+  # data = data[-c(3)]
   
   for (i in seq_along(data)) {
     l[[i]] = data.frame(
@@ -32,7 +31,7 @@ names(res) = files
 require(mclust)
 require(corrplot)
 require(viridis)
-kk = res$metagenomic_morgan.rds
+# kk = res$metagenomic_morgan.rds
 corrplots = list()
 for (i in seq_along(res)) {
   kk = res[[i]]
@@ -80,7 +79,7 @@ for (i in seq_along(corrplots)) {
                           colors = c(viridis(1),viridis(2),viridis(3)))
   
 }
-
+require(ggpubr)
 ggarrange(plots[[6]], plots[[7]], plots[[8]],
           plots[[1]], plots[[2]], plots[[3]], 
           plots[[4]], plots[[5]],

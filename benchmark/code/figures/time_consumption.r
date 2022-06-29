@@ -1,4 +1,4 @@
-setwd('~/git/Review-MLAID/benchmark/results/')
+setwd('~/git/Review-MLAID/benchmark/results/single-omic/')
 
 
 files = list.files()
@@ -8,7 +8,7 @@ res = list()
 # i = 1
 for (f in seq_along(files)) {
   data = readRDS(files[f])
-  # data = data[-c(3, 4, 8)]
+  # data = data[-c(3)]
   for (i in seq_along(data)) {
     tt = data[[i]]$time 
     if (i == 7) {

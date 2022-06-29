@@ -69,10 +69,10 @@ SOM = function(data){
   nclust = length(unique(res$Best.partition))
   som_cluster = res$Best.partition
   cluster_assignment = som_cluster[map$unit.classif]
-  data$cluster = cluster_assignment
+  # data$cluster = cluster_assignment
   
-  labels = data$cluster
-  names(labels) = rownames(data)
+  labels = cluster_assignment
+  names(labels) = colnames(data)
   
   end = Sys.time()
   time = difftime(end, start, units = 'secs')

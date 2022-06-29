@@ -24,7 +24,7 @@ names(data) = gsub('.rds', '', files)
 
 for (i in seq_along(data)) {
   runall(data[[i]],
-         file = paste0('epigenomic_', names(data)[i]),
+         file = paste0('metagenomic_', names(data)[i]),
          outPath = 'benchmark/results/single-omic/',
          return = F, save = T)
 }

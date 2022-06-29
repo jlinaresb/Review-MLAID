@@ -4,7 +4,7 @@ files = list.files()
 time = list()
 l = list()
 res = list()
-# f = 1
+f = 1
 for (f in seq_along(files)) {
   data = readRDS(files[f])
   # data = data[-c(3)]

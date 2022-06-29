@@ -29,3 +29,35 @@ mapping = function(rows){
   
   return(i - 1)
 }
+
+
+select_k_icluster = function(ic, plot = T){
+  
+  require(iClusterPlus)
+  
+  BIC = getBIC(ic)
+  devR = getDevR(ic)
+  minBICid = apply(BIC, 2, which.min)
+  nK = length(ic)
+  devRatMinBIC = rep(NA, nK)
+  for (i in 1:nK) {
+    devRatMinBIC[i] = devR[minBICid[i], i]
+  }
+  
+  clusters = getClusters(ic)
+  rownames(clusters)=names(exp$Consensus.H$labels)
+  colnames(clusters)=paste("K=",1:(length(ic)),sep="")
+  k = which.max(devRatMinBIC)
+  
+  labels = clusters[,k]
+  nclust = length(unique(labels))
+  
+  if (plot == T) {
+    plot(1:(nK+1),c(0,devRatMinBIC),type="b",xlab="Number of clusters (K+1)", ylab="%Explained Variation")
+  }
+  
+  return(list(nclust = nclust,
+              labels = labels))
+  
+}
+

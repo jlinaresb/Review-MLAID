@@ -80,6 +80,112 @@ conCluster.h = function(data1, data2, maxK = 10){
 }
 
 
+# SOM (?)
+# ===
+SOM = function(data1, data2){
+  
+  # Extracted from: https://www.shanelynn.ie/self-organising-maps-for-customer-segmentation-using-r/
+  require(kohonen)
+  stopifnot(colnames(data1) == colnames(data2))
+  data_bind = rbind.data.frame(data1, data2)
+  
+  df = scale(t(data_bind))
+  
+  dim = mapping(nrow(df))
+  
+  start = Sys.time()
+  grid = somgrid(xdim = dim, ydim = dim,
+                 topo = "hexagonal")
+  
+  map = som(df, grid=grid)
+  
+  res = NbClust::NbClust(data = map$codes[[1]], method = 'ward.D', index = 'tau')
+  nclust = length(unique(res$Best.partition))
+  som_cluster = res$Best.partition
+  cluster_assignment = som_cluster[map$unit.classif]
+  # data$cluster = cluster_assignment
+  
+  labels = cluster_assignment
+  names(labels) = colnames(data)
+  
+  end = Sys.time()
+  time = difftime(end, start, units = 'secs')
+  
+  nclust = length(unique(res$Best.partition))
+  return(list(time = time,
+              nclust = nclust,
+              labels = labels,
+              fit = res))
+  
+}
+
+
+
+# NMF
+# ===
+NMF = function(data1, data2){
+  
+  require(NMF)
+  stopifnot(colnames(data1) == colnames(data2))
+  data_bind = rbind.data.frame(data1, data2)
+  
+  normalize <- function(x, na.rm = TRUE) {
+    return((x- min(x)) /(max(x)-min(x)))
+  }
+  
+  data = as.data.frame(t(apply(data_bind, 1, function(x) normalize(x))))
+  
+  # meth <- nmfAlgorithm(version='R')
+  # meth <- c(names(meth), meth)
+  
+  start = Sys.time()
+  res = nmf(data, 
+            rank = c(2:10),
+            method = 'brunet',
+            nrun = 30,
+            .options= 'vp15')
+  
+  end = Sys.time()
+  time = difftime(end, start, units = 'secs')
+  
+  # plot(res)
+  nclust = res$measures$rank[which.max(res$measures$silhouette.consensus)] # confirm!!! ¿max?
+  
+  h = coef(res$fit[[nclust-1]])
+  labels = apply(h, 2, which.max)
+  
+  return(list(time = time,
+              nclust = nclust,
+              labels = labels,
+              fit = res))
+  
+}
+
+# Mclust
+# ===
+mclust = function(data1, data2){
+  
+  require(mclust)
+  stopifnot(colnames(data1) == colnames(data2))
+  data_bind = rbind.data.frame(data1, data2)
+  
+  data = t(data_bind)
+  
+  start = Sys.time()
+  res = mclust::Mclust(data,
+                       modelNames = 'EII',
+                       na.rm = T)
+  end = Sys.time()
+  time = difftime(end, start, units = 'secs')
+  nclust = res$G
+  
+  return(list(time = time,
+              nclust = nclust,
+              labels = res$classification,
+              fit = res))
+  
+}
+
 
 # SNF
 # ===
@@ -150,6 +256,15 @@ run_multiomic = function(data1, data2, outPath, file, return = F, save = T){
   print('Runing K-Means consensus clustering')
   cc.km = conCluster.km(data1, data2, maxK = 10)
   
+  print('Runing SOM clustering')
+  som = SOM(data1, data2)
+  
+  print('Runing NMF clustering')
+  nmf = NMF(data1, data2)
+  
+  print('Runing mclust clustering')
+  m = mclust(data1, data2)
+  
   print('Runing SNF clustering')
   snf = snf(data1, data2)
   
@@ -159,6 +274,9 @@ run_multiomic = function(data1, data2, outPath, file, return = F, save = T){
   res = list(
     Consensus.H = cc.h,
     Consensus.KM = cc.km,
+    SOM = som,
+    MClust = m,
+    NMF = nmf,
     SNF = snf,
     iCluster = icluster
   )

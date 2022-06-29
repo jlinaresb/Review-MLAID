@@ -1,9 +1,9 @@
 #!/bin/bash
 
-#SBATCH -p cola-corta
-#SBATCH --qos default
+#SBATCH -p amd-shared
+#SBATCH --qos amd-shared
 #SBATCH -t 10:00:00
-#SBATCH --mem=100GB
+#SBATCH --mem=200GB
 #SBATCH -n 15
 #SBATCH --mail-user=joselb1993@gmail.com
 #SBATCH --mail-type=BEGIN,END

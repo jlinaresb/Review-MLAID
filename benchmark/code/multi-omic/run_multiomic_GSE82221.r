@@ -9,7 +9,7 @@ if (cesga == T) {
   setwd('~/git/Review-MLAID/')
 }
 
-source('benchmark/code/single-omic/cluster_algorithms.r')
+
 source('benchmark/code/multi-omic/cluster_algorithms_multiomics.r')
 
 
@@ -42,7 +42,7 @@ data = list(
   expression = data1,
   methylation = data2
 )
-
+source('benchmark/code/single-omic/cluster_algorithms.r')
 for (i in seq_along(data)) {
   runall(data[[i]],
          file = paste0('GSE82221_', names(data)[i]),

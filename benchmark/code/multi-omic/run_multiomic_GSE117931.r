@@ -9,7 +9,7 @@ if (cesga == T) {
 }
 
 
-
+source('benchmark/code/multi-omic/cluster_algorithms_multiomics.r')
 
 # Load data
 # ===
@@ -24,7 +24,6 @@ data2 = exprs(dat)
 
 # Run the models with multi-omic
 # ===
-source('benchmark/code/multi-omic/cluster_algorithms_multiomics.r')
 run_multiomic(data1 = data1,
               data2 = data2,
               outPath = 'benchmark/results/multi-omic/',

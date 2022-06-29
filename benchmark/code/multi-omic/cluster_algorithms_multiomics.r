@@ -106,7 +106,7 @@ SOM = function(data1, data2){
   # data$cluster = cluster_assignment
   
   labels = cluster_assignment
-  names(labels) = colnames(data)
+  names(labels) = colnames(data_bind)
   
   end = Sys.time()
   time = difftime(end, start, units = 'secs')

@@ -37,6 +37,7 @@ res$omic[grep('epigenomic', res$cohort)] = 'epigenomic'
 require(ggpubr)
 
 res$time.log10 = log10(res$time)
+res$omic =factor(res$omic, levels = c('transcriptomic', 'epigenomic', 'metagenomic'))
 
 plot_time = ggplot(res, aes(x=samples, y=time.log10, color = algorithm)) + 
   geom_line() +
@@ -44,5 +45,14 @@ plot_time = ggplot(res, aes(x=samples, y=time.log10, color = algorithm)) +
   # geom_smooth(method = lm, se = F) +
   facet_wrap(~omic, scales = 'free_x') +
   theme_bw() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  theme(legend.position = 'top')
 plot_time
+
+
+ggsave(plot = plot_time, 
+       filename = 'time_singleomic.pdf',
+       device = 'pdf',
+       path = '~/git/Review-MLAID/benchmark/plots/',
+       height = 5,
+       width = 7)

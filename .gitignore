@@ -2,3 +2,6 @@ benchmark/extdata
 benchmark/results
 benchmark/data
 .Rhistory
+benchmark/plots/*.tif
+benchmark/plots/*.pdf
+benchmark/plots/*.ai

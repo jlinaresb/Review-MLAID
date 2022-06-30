@@ -66,23 +66,29 @@ for (i in seq_along(corrplots)) {
   toPlot[which(is.nan(toPlot))] = 0
   
   plots[[i]] = ggcorrplot(toPlot,
-                          hc.order = T,
+                          hc.order = F,
                           type = 'lower',
                           lab = T,
                           insig = 'blank',
-                          title = names(corrplots)[i],
+                          title = strsplit(names(corrplots)[i], '_')[[1]][3],
                           show.legend = F,
                           show.diag = F, 
-                          tl.cex = 4,
+                          tl.cex = 7,
                           lab_size = 2, 
                           digits = 1,
                           colors = c(viridis(1),viridis(2),viridis(3)))
   
 }
 require(ggpubr)
-ggarrange(plots[[6]], plots[[7]], plots[[8]],
+finalPlot = ggarrange(plots[[6]], plots[[7]], plots[[8]],
           plots[[1]], plots[[2]], plots[[3]], 
           plots[[4]], plots[[5]],
           ncol = 3, nrow = 4, 
           common.legend = T)
 
+ggsave(plot = finalPlot, 
+       filename = 'ari_singleomic.pdf',
+       device = 'pdf',
+       path = '~/git/Review-MLAID/benchmark/plots/',
+       height = 9,
+       width = 7)

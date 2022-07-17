@@ -68,6 +68,7 @@ data1 = data
 
 
 
+rm(list = setdiff(ls(), c('data1', 'select_k_icluster')))
 
 
 
@@ -130,10 +131,10 @@ plot_nclust = ggplot(data, aes(algorithms, datasets)) +
   geom_tile(aes(fill = results)) +
   geom_text(aes(label = results)) +
   facet_wrap(~cohort) +
-  scale_fill_gradient(low = '#a8c6ef', high = '#043c8c') +
+  theme(strip.text.x =  element_text(angle = 45)) +
+  scale_fill_gradient(low = viridis(10)[1], high = viridis(10)[10]) +
   theme(
-    axis.text = element_text(size = 7),
-    axis.text.x = element_text(angle = 90, hjust = 1)) +
+    axis.text = element_text(size = 7)) +
   theme_bw()
 
 plot_nclust
@@ -143,12 +144,12 @@ ggsave(plot = plot_nclust,
        filename = 'nclust_multiomic.pdf',
        device = 'pdf',
        path = '~/git/Review-MLAID/benchmark/plots/',
-       height = 5,
+       height = 2.5,
        width = 7)
 
-ggsave(plot = plot_nclust,
-       filename = 'nclust_multiomic.png',
-       device = 'png',
-       path = '~/git/Review-MLAID/benchmark/plots/',
-       height = 5,
-       width = 7)
+# ggsave(plot = plot_nclust,
+#        filename = 'nclust_multiomic.png',
+#        device = 'png',
+#        path = '~/git/Review-MLAID/benchmark/plots/',
+#        height = 5,
+#        width = 7)

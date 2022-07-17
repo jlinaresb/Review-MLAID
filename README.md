@@ -95,9 +95,9 @@ Query was constructed by three conditional aspects: disease, approach, omic type
 First, based on Scopus annotation we select only articles types. Therefore, book chapters, conference papers, editorials, letters, notes, reviews and short surverys were removed. Those articles without avialble DOI and duplicated were also removed.
 
 After automatic screening titles, we removed records without the word 'cluster', 'unsupervised', 'stratification' o 'subtype' in the title.
+Methodological
 
-
-## Methodological flowchart and number of papers reviewd at each stage
+##  flowchart and number of papers reviewd at each stage
 
 * Identification
 Records through scripting query: 5850

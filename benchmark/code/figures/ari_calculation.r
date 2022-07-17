@@ -4,7 +4,7 @@ files = list.files()
 time = list()
 l = list()
 res = list()
-f = 1
+# f = 1
 for (f in seq_along(files)) {
   data = readRDS(files[f])
   # data = data[-c(3)]
@@ -43,6 +43,7 @@ for (i in seq_along(res)) {
   ari <- function(i, j, data) {adjustedRandIndex(data[,i], data[,j])}
   corp <- Vectorize(ari, vectorize.args = list("i","j"))
   ari_res = outer(1:n, 1:n, corp, data=kk)
+  ari_res[ari_res < 0] = 0
   
   rownames(ari_res) = algs
   colnames(ari_res) = algs

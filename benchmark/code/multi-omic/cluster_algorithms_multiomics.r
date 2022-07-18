@@ -243,7 +243,29 @@ icluster = function(data1, data2){
   
 }
 
-
+COCA = function(data1, data2){
+  
+  require(coca)
+  
+  data = list(data1, data2)
+  start = Sys.time()
+  outputBuildMOC = coca::buildMOC(data,
+                                  M = 2,
+                                  maxK = 10,
+                                  methods = 'hclust',
+                                  distances = 'minkowski',
+                                  fill = TRUE)
+  
+  moc = outputBuildMOC$moc
+  res = coca::coca(moc, maxK = 10, hclustMethod = 'average')
+  end = Sys.time()
+  time = difftime(end, start, units = 'secs')
+  
+  return(list(time = time,
+              fit = res))
+  
+  
+}
 
 # Run all
 
@@ -271,6 +293,9 @@ run_multiomic = function(data1, data2, outPath, file, return = F, save = T){
   print('Runing iClusterPlust clustering')
   icluster = icluster(data1, data2)
   
+  print('Runing COCA clustering')
+  coca = COCA(data1, data2)
+  
   res = list(
     Consensus.H = cc.h,
     Consensus.KM = cc.km,
@@ -278,7 +303,8 @@ run_multiomic = function(data1, data2, outPath, file, return = F, save = T){
     MClust = m,
     NMF = nmf,
     SNF = snf,
-    iCluster = icluster
+    iCluster = icluster,
+    coca = coca
   )
   
   if (save == T){

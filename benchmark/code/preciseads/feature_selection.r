@@ -23,12 +23,15 @@ res.levene.exp = apply(exp,  1, function(x) car::leveneTest(x, clinical$cases)$`
 res.levene.adj.exp = p.adjust(res.levene.exp, method = 'bonferroni')
 
 head(res.levene.adj.exp)
-length(which(res.levene.adj.exp < 0.05))
+exp.f = exp[which(res.levene.adj.exp < 0.05),]
 
 # In mehtylation data
 res.levene.met = apply(met, 1, function(x) car::leveneTest(x, clinical$cases)$`Pr(>F)`[1])
 res.levene.adj.met = p.adjust(res.levene.met, method = 'bonferroni')
 
 head(res.levene.adj.met)
-length(which(res.levene.adj.met < 0.05))
+met.f = met[which(res.levene.adj.met < 0.05),]
 
+
+saveRDS(exp.f, file = '~/git/Review-MLAID/benchmark/data/preciseads/expression_filtered_levene.rds')
+saveRDS(met.f, file = '~/git/Review-MLAID/benchmark/data/preciseads/methylation_filtered_levene.rds')

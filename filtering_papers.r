@@ -29,7 +29,15 @@ scopus.d = scopus[which(is.na(scopus$duplicated)),]
 # Check if article is based on clustering
 # ===
 # scopus.c = grepCluster(scopus.d)
-byCohort = scopus.d[grep('cohort', tolower(scopus.d$abstract)),]
+query1 = scopus.d[grep('disease classification', tolower(scopus.d$abstract)),]$DOI
+query2 = scopus.d[grep('patient stratification', tolower(scopus.d$abstract)),]$DOI
+query3 = scopus.d[grep('cluster patients', tolower(scopus.d$abstract)),]$DOI
+query4 = scopus.d[grep('disease stratification', tolower(scopus.d$abstract)),]$DOI
+byCohort = scopus.d[grep('cohort', tolower(scopus.d$abstract)),]$DOI
+
+selected_dois = unique(c(query1, query2, query3, query4, byCohort))
+
+View(scopus.d[match(c(query1, query2, query3), scopus.d$DOI),])
 
 # Export to excel file
 # ===

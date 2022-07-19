@@ -81,7 +81,8 @@ SOM = function(data){
   return(list(time = time,
               nclust = nclust,
               labels = labels,
-              fit = res))
+              fit = list(map = map,
+                         res = res)))
   
 }
 
@@ -209,10 +210,11 @@ mclust = function(data){
   end = Sys.time()
   time = difftime(end, start, units = 'secs')
   nclust = res$G
+  labels = res$classification
   
   return(list(time = time,
               nclust = nclust,
-              labels = res$classification,
+              labels = labels,
               fit = res))
   
 }
@@ -224,9 +226,6 @@ mclust = function(data){
 # ===
 runall = function(data, file, outPath, return = F, save = T){
   
-  # Arguments
-  #   dim: for SOM map
- 
   print(paste0('Runing hierarchical consensus clustering for: ', file))
   cc.h = conCluster.h(data, 10)
 
@@ -236,20 +235,11 @@ runall = function(data, file, outPath, return = F, save = T){
   print(paste0('Runing SOM clustering for: ', file))
   som = SOM(data)
 
-  #print(paste0('Runing hierarchical clustering for: ', file))
-  #h = hierarchical(data)  
-  
-  #print(paste0('Runing K-Means clustering for: ', file))
-  # k = KMEANS(data)        
-  
   print(paste0('Runing Mclust clustering for: ', file))
   m = mclust(data)
   
   print(paste0('Runing NMF clustering for: ', file))
   nmf = NMF(data)
-  
-  #print(paste0('Runing SNF clustering for: ', file))
-  #snf = snf(data)           
   
   res = list(
             Consensus.H = cc.h,

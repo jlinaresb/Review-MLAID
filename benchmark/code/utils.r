@@ -31,7 +31,7 @@ mapping = function(rows){
 }
 
 
-select_k_icluster = function(ic, plot = T){
+select_k_icluster = function(ic, ids, plot = T){
   
   require(iClusterPlus)
   
@@ -45,7 +45,7 @@ select_k_icluster = function(ic, plot = T){
   }
   
   clusters = getClusters(ic)
-  rownames(clusters)=names(exp$Consensus.H$labels)
+  rownames(clusters)=ids
   colnames(clusters)=paste("K=",1:(length(ic)),sep="")
   k = which.max(devRatMinBIC)
   

@@ -115,8 +115,9 @@ SOM = function(data1, data2){
   return(list(time = time,
               nclust = nclust,
               labels = labels,
-              fit = res))
-  
+              fit = list(
+                map = map,
+                res = res)))
 }
 
 
@@ -178,10 +179,12 @@ mclust = function(data1, data2){
   end = Sys.time()
   time = difftime(end, start, units = 'secs')
   nclust = res$G
+  labels = res$classification
+  names(labels) = colnames(data1)
   
   return(list(time = time,
               nclust = nclust,
-              labels = res$classification,
+              labels = labels,
               fit = res))
   
 }
@@ -191,12 +194,14 @@ mclust = function(data1, data2){
 # ===
 snf = function(data1, data2, K = 20, alpha = 0.5, iters = 30){
   
-  data1 = t(data1)
-  data2 = t(data2)
+  stopifnot(colnames(data1) == colnames(data2))
+  
+  dat1 = t(data1)
+  dat2 = t(data2)
   
   require(SNFtool)
-  d1 = standardNormalization(data1)
-  d2 = standardNormalization(data2)
+  d1 = standardNormalization(dat1)
+  d2 = standardNormalization(dat2)
   
   start = Sys.time()
   Dist1 = SNFtool::dist2(as.matrix(d1), as.matrix(d1))
@@ -207,12 +212,15 @@ snf = function(data1, data2, K = 20, alpha = 0.5, iters = 30){
   
   W = SNF(list(W1, W2), K, t = iters)
   nclust = estimateNumberOfClustersGivenGraph(W, 2:10)[[1]]
+  labels = spectralClustering(W,nclust)
+  names(labels) = colnames(data1)
   end = Sys.time()
   time = end - start
   
   return(list(time = time,
               nclust = nclust,
-              labels = W))
+              labels = labels,
+              fit = W))
 }
 
 
@@ -220,6 +228,9 @@ snf = function(data1, data2, K = 20, alpha = 0.5, iters = 30){
 # ===
 require(iClusterPlus)
 icluster = function(data1, data2){
+  
+  stopifnot(colnames(data1) == colnames(data2))
+  patsIDs = colnames(data1)
   
   # Fitting
   # ===
@@ -235,17 +246,26 @@ icluster = function(data1, data2){
                                 scale.lambda = c(1,1),
                                 maxiter = 20)
   }
+  nclust = select_k_icluster(cv, ids = patsIDs)$nclust
+  labels = select_k_icluster(cv, ids = patsIDs)$labels
+
   end = Sys.time()
   time = difftime(end, start, units = 'secs')
   
   return(list(time = time,
+              nclust = nclust,
+              labels = labels,
               fit = cv))
-  
 }
 
+
+# COCA
+# ===
 COCA = function(data1, data2){
   
   require(coca)
+  
+  stopifnot(colnames(data1) == colnames(data2))
   
   data = list(data1, data2)
   start = Sys.time()
@@ -253,18 +273,24 @@ COCA = function(data1, data2){
                                   M = 2,
                                   maxK = 10,
                                   methods = 'hclust',
-                                  distances = 'minkowski',
-                                  fill = TRUE)
+                                  distances = 'minkowski')
   
   moc = outputBuildMOC$moc
   res = coca::coca(moc, maxK = 10, hclustMethod = 'average')
+  
+  nclust = unique(res$clusterLabels)
+  labels = res$clusterLabels
+  names(labels) = colnames(data1)
+  
   end = Sys.time()
   time = difftime(end, start, units = 'secs')
   
   return(list(time = time,
-              fit = res))
-  
-  
+              nclust = nclust,
+              labels = labels,
+              fit = list(
+                outputBuildMOC = outputBuildMOC,
+                coca = res)))
 }
 
 # Run all

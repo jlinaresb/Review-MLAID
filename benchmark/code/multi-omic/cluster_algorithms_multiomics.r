@@ -6,7 +6,7 @@ source('/mnt/netapp2/Store_uni/home/ulc/co/jlb/git/Review-MLAID/benchmark/code/u
 
 # Consensus of k-Means cluster
 # ===
-conCluster.km = function(data1 ,data2, maxK = 10){
+conCluster.km = function(data1 ,data2, maxK = 10, outPath, file, return = F, save = T){
   
   require(ConsensusClusterPlus)
   stopifnot(colnames(data1) == colnames(data2))
@@ -34,17 +34,25 @@ conCluster.km = function(data1 ,data2, maxK = 10){
   labels = as.numeric(as.factor(res[[nclust]]$clrs[[1]]))
   names(labels) = colnames(data_bind)
   
-  return(list(time = time,
+  res = list(time = time,
               nclust = nclust,
               labels = labels,
-              fit = res))
+              fit = res)
+  
+  if (save == T){
+    saveRDS(res, file = paste0(outPath, file, '.rds'))
+  }
+  
+  if (return == T) {
+    return(res)
+  }
   
 }
 
 
 # Consensus of Hierarchical cluster
 # ===
-conCluster.h = function(data1, data2, maxK = 10){
+conCluster.h = function(data1, data2, maxK = 10, outPath, file, return = F, save = T){
   
   require(ConsensusClusterPlus)
   stopifnot(colnames(data1) == colnames(data2))
@@ -72,17 +80,24 @@ conCluster.h = function(data1, data2, maxK = 10){
   labels = as.numeric(as.factor(res[[nclust]]$clrs[[1]]))
   names(labels) = colnames(data_bind)
   
-  return(list(time = time,
+  res = list(time = time,
               nclust = nclust,
               labels = labels,
-              fit = res))
+              fit = res)
   
+  if (save == T){
+    saveRDS(res, file = paste0(outPath, file, '.rds'))
+  }
+  
+  if (return == T) {
+    return(res)
+  }
 }
 
 
 # SOM (?)
 # ===
-SOM = function(data1, data2){
+SOM = function(data1, data2, outPath, file, return = F, save = T){
   
   # Extracted from: https://www.shanelynn.ie/self-organising-maps-for-customer-segmentation-using-r/
   require(kohonen)
@@ -112,19 +127,28 @@ SOM = function(data1, data2){
   time = difftime(end, start, units = 'secs')
   
   nclust = length(unique(res$Best.partition))
-  return(list(time = time,
+
+  res = list(time = time,
               nclust = nclust,
               labels = labels,
               fit = list(
                 map = map,
-                res = res)))
+                res = res))
+  
+  if (save == T){
+    saveRDS(res, file = paste0(outPath, file, '.rds'))
+  }
+  
+  if (return == T) {
+    return(res)
+  }
 }
 
 
 
 # NMF
 # ===
-NMF = function(data1, data2){
+NMF = function(data1, data2, outPath, file, return = F, save = T){
   
   require(NMF)
   stopifnot(colnames(data1) == colnames(data2))
@@ -155,16 +179,23 @@ NMF = function(data1, data2){
   h = coef(res$fit[[nclust-1]])
   labels = apply(h, 2, which.max)
   
-  return(list(time = time,
+  res = list(time = time,
               nclust = nclust,
               labels = labels,
-              fit = res))
+              fit = res)
   
+  if (save == T){
+    saveRDS(res, file = paste0(outPath, file, '.rds'))
+  }
+  
+  if (return == T) {
+    return(res)
+  }
 }
 
 # Mclust
 # ===
-mclust = function(data1, data2){
+mclust = function(data1, data2, outPath, file, return = F, save = T){
   
   require(mclust)
   stopifnot(colnames(data1) == colnames(data2))
@@ -182,17 +213,24 @@ mclust = function(data1, data2){
   labels = res$classification
   names(labels) = colnames(data1)
   
-  return(list(time = time,
+  res = list(time = time,
               nclust = nclust,
               labels = labels,
-              fit = res))
+              fit = res)
   
+  if (save == T){
+    saveRDS(res, file = paste0(outPath, file, '.rds'))
+  }
+  
+  if (return == T) {
+    return(res)
+  }
 }
 
 
 # SNF
 # ===
-snf = function(data1, data2, K = 20, alpha = 0.5, iters = 30){
+snf = function(data1, data2, K = 20, alpha = 0.5, iters = 30, outPath, file, return = F, save = T){
   
   stopifnot(colnames(data1) == colnames(data2))
   
@@ -217,17 +255,26 @@ snf = function(data1, data2, K = 20, alpha = 0.5, iters = 30){
   end = Sys.time()
   time = end - start
   
-  return(list(time = time,
+  res = list(time = time,
               nclust = nclust,
               labels = labels,
-              fit = W))
+              fit = W)
+  
+  if (save == T){
+    saveRDS(res, file = paste0(outPath, file, '.rds'))
+  }
+  
+  if (return == T) {
+    return(res)
+  }
 }
 
 
 # iClusterPlus
 # ===
-require(iClusterPlus)
-icluster = function(data1, data2){
+icluster = function(data1, data2, outPath, file, return = F, save = T){
+  
+  require(iClusterPlus)
   
   stopifnot(colnames(data1) == colnames(data2))
   patsIDs = colnames(data1)
@@ -252,16 +299,24 @@ icluster = function(data1, data2){
   end = Sys.time()
   time = difftime(end, start, units = 'secs')
   
-  return(list(time = time,
+  res = list(time = time,
               nclust = nclust,
               labels = labels,
-              fit = cv))
+              fit = cv)
+  
+  if (save == T){
+    saveRDS(res, file = paste0(outPath, file, '.rds'))
+  }
+  
+  if (return == T) {
+    return(res)
+  }
 }
 
 
 # COCA
 # ===
-COCA = function(data1, data2){
+COCA = function(data1, data2, outPath, file, return = F, save = T){
   
   require(coca)
   
@@ -285,18 +340,25 @@ COCA = function(data1, data2){
   end = Sys.time()
   time = difftime(end, start, units = 'secs')
   
-  return(list(time = time,
+  res = list(time = time,
               nclust = nclust,
               labels = labels,
               fit = list(
                 outputBuildMOC = outputBuildMOC,
-                coca = res)))
+                coca = res))
+  
+  if (save == T){
+    saveRDS(res, file = paste0(outPath, file, '.rds'))
+  }
+  
+  if (return == T) {
+    return(res)
+  }
 }
 
 # Run all
 
 run_multiomic = function(data1, data2, outPath, file, return = F, save = T){
-  
   
   print('Runing hierarchical consensus clustering')
   cc.h = conCluster.h(data1, data2, maxK = 10)

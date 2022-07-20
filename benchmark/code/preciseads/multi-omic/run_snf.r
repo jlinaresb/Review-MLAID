@@ -16,7 +16,7 @@ met = readRDS('benchmark/data/preciseads/methylation_filtered_levene.rds')
 
 snf(data1 = exp,
     data2 = met,
-    k = 20,
+    K = 20,
     alpha = 0.5,
     iters = 30,
     outPath = 'benchmark/results/preciseads/',

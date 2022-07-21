@@ -30,6 +30,7 @@ stopifnot(rownames(clinical) == names(met))
 
 # Fast correlation based feature selection (FCBF)
 # ===
+require(FCBF)
 # In expression
 print('FCBF in expression ...')
 dis_exp = as.data.frame(discretize_exprs(exp))

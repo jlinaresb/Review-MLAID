@@ -1,62 +1,62 @@
-cesga = T
+cesga = F
 
-# if (cesga == T) {
-#   setwd('/mnt/netapp2/Store_uni/home/ulc/co/jlb/git/Review-MLAID')
-# } else{
-#   setwd('~/git/Review-MLAID/')
-# }
-# 
-# outPath = 'benchmark/data/preciseads/'
-# 
-# 
-# # Load data
-# # ===
-# require(data.table)
-# # clinical
-# clinical = read.delim2('benchmark/extdata/PRECISEADS/Metadata.tsv')
-# rownames(clinical) = make.names(rownames(clinical))
-# clinical$cases = as.factor(ifelse(clinical$Diagnosis == 'CTRL', 'control', 'case'))
-# cases = which(clinical$cases == 'case')
-# 
-# # expression
-# exp = read.table('benchmark/extdata/PRECISEADS/TPMs_filtered.tsv', header = T)
-# 
-# # methylation
-# met = fread('benchmark/extdata/PRECISEADS/MValues_filtered.tsv', data.table = F)
-# rownames(met) = met$V1; met = met[,-1]
-# names(met) = make.names(names(met))
-# 
-# stopifnot(names(met) == names(exp))
-# stopifnot(rownames(clinical) == names(met))
-# 
-# # Fast correlation based feature selection (FCBF)
-# # ===
-# require(FCBF)
-# # In expression
-# print('FCBF in expression ...')
-# dis_exp = as.data.frame(discretize_exprs(exp))
-# fit.exp = fcbf(feature_table = dis_exp,
-#             target_vector = clinical$cases,
-#             minimum_su = 0.0005)
-# 
-# exp.fcbf = exp[fit.exp$index,]
-# exp.fcbf.noctrls = exp[fit.exp$index, cases]
-# 
-# saveRDS(exp.fcbf, file = paste0(outPath, 'expression_fcbf.rds'))
-# saveRDS(exp.fcbf.noctrls, file = paste0(outPath, 'expression_fcbf_noctrls.rds'))
-# 
-# # In methylation
-# print('FCBF  in methylation ...')
-# dis_met = as.data.frame(discretize_exprs(met))
-# fit.met = fcbf(feature_table = dis_met,
-#                 target_vector = clinical$cases,
-#                 minimum_su = 0.0005)
-# 
-# met.fcbf = met[fit.met$index,]
-# met.fcbf.noctrls = met[fit.met$index, cases]
-# 
-# saveRDS(met.fcbf, file = paste0(outPath, 'methylation_fcbf.rds'))
-# saveRDS(met.fcbf.noctrls, file = paste0(outPath, 'methylation_fcbf_noctrls.rds'))
+if (cesga == T) {
+  setwd('/mnt/netapp2/Store_uni/home/ulc/co/jlb/git/Review-MLAID')
+} else{
+  setwd('~/git/Review-MLAID/')
+}
+
+outPath = 'benchmark/data/preciseads/'
+
+
+# Load data
+# ===
+require(data.table)
+# clinical
+clinical = read.delim2('benchmark/extdata/PRECISEADS/Metadata.tsv')
+rownames(clinical) = make.names(rownames(clinical))
+clinical$cases = as.factor(ifelse(clinical$Diagnosis == 'CTRL', 'control', 'case'))
+cases = which(clinical$cases == 'case')
+
+# expression
+exp = read.table('benchmark/extdata/PRECISEADS/TPMs_filtered.tsv', header = T)
+
+# methylation
+met = fread('benchmark/extdata/PRECISEADS/MValues_filtered.tsv', data.table = F)
+rownames(met) = met$V1; met = met[,-1]
+names(met) = make.names(names(met))
+
+stopifnot(names(met) == names(exp))
+stopifnot(rownames(clinical) == names(met))
+
+# Fast correlation based feature selection (FCBF)
+# ===
+require(FCBF)
+# In expression
+print('FCBF in expression ...')
+dis_exp = as.data.frame(discretize_exprs(exp))
+fit.exp = fcbf(feature_table = dis_exp,
+            target_vector = clinical$cases,
+            minimum_su = 0.0005)
+
+exp.fcbf = exp[fit.exp$index,]
+exp.fcbf.noctrls = exp[fit.exp$index, cases]
+
+saveRDS(exp.fcbf, file = paste0(outPath, 'expression_fcbf.rds'))
+saveRDS(exp.fcbf.noctrls, file = paste0(outPath, 'expression_fcbf_noctrls.rds'))
+
+# In methylation
+print('FCBF  in methylation ...')
+dis_met = as.data.frame(discretize_exprs(met))
+fit.met = fcbf(feature_table = dis_met,
+                target_vector = clinical$cases,
+                minimum_su = 0.0005)
+
+met.fcbf = met[fit.met$index,]
+met.fcbf.noctrls = met[fit.met$index, cases]
+
+saveRDS(met.fcbf, file = paste0(outPath, 'methylation_fcbf.rds'))
+saveRDS(met.fcbf.noctrls, file = paste0(outPath, 'methylation_fcbf_noctrls.rds'))
 
 # Select features by levene test
 # ===

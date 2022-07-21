@@ -1,7 +1,14 @@
 # Utils
 # ===
+
+if (cesga == T) {
+  setwd('/mnt/netapp2/Store_uni/home/ulc/co/jlb/git/Review-MLAID')
+} else{
+  setwd('~/git/Review-MLAID/')
+}
+
 require(Biobase)
-source('/mnt/netapp2/Store_uni/home/ulc/co/jlb/git/Review-MLAID/benchmark/code/utils.r')
+source('benchmark/code/utils.r')
 
 
 # Consensus of k-Means cluster
@@ -284,7 +291,7 @@ icluster = function(data1, data2, outPath, file, return = F, save = T){
   cv = list()
   start = Sys.time()
   for(k in 1:10){
-    cv[[k]] = tune.iClusterPlus(cpus = 15,
+    cv[[k]] = tune.iClusterPlus(cpus = 50,
                                 dt1 = t(data1),
                                 dt2 = t(data2),
                                 type = c('gaussian','gaussian'),

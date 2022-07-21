@@ -16,7 +16,7 @@ select_k = function(res, maxK){
   # The optimal K
   optK = Kvec[which.min(PAC)]
   
-  return(optK)
+  return(PAC)
   
 }
 
@@ -61,3 +61,23 @@ select_k_icluster = function(ic, ids, plot = T){
   
 }
 
+
+fast.cor.FS = function(data, thresh){
+  
+  stopifnot('target' %in% names(data))
+  require(FCBF)
+  
+  y = as.factor(data$target)
+  x = subset(data, select = - c(target))
+  
+  dis = discretize_exprs(t(x))
+  # su_plot(dis, y)
+  
+  fcbf = fcbf(dis, y, verbose = T, minimum_su = thresh)
+  xx = x[,fcbf$index]
+  
+  xx = as.data.frame(cbind(xx, target = y))
+  
+  return(xx)
+  
+}

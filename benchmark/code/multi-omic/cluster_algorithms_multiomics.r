@@ -121,7 +121,9 @@ SOM = function(data1, data2, outPath, file, return = F, save = T){
   
   map = som(df, grid=grid)
   
-  res = NbClust::NbClust(data = map$codes[[1]], method = 'ward.D', index = 'tau')
+  res = NbClust::NbClust(data = map$codes[[1]], 
+                         method = 'ward.D',
+                         index = 'tau')
   nclust = length(unique(res$Best.partition))
   som_cluster = res$Best.partition
   cluster_assignment = som_cluster[map$unit.classif]

@@ -331,6 +331,9 @@ COCA = function(data1, data2, outPath, file, return = F, save = T){
   
   stopifnot(colnames(data1) == colnames(data2))
   
+  data1 = as.data.frame(t(data1))
+  data2 = as.data.frame(t(data2))
+  
   data = list(data1, data2)
   start = Sys.time()
   outputBuildMOC = coca::buildMOC(data,

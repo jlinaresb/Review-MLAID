@@ -177,7 +177,7 @@ NMF = function(data){
             rank = c(2:10),
             method = 'brunet',
             nrun = 30,
-            .options= 'vp15')
+            .options= 'vp20')
   
   end = Sys.time()
   time = difftime(end, start, units = 'secs')

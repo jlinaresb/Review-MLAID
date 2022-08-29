@@ -177,7 +177,7 @@ NMF = function(data1, data2, outPath, file, return = F, save = T){
             rank = c(2:10),
             method = 'brunet',
             nrun = 30,
-            .options= 'vp15')
+            .options= 'vp20')
   
   end = Sys.time()
   time = difftime(end, start, units = 'secs')
@@ -293,7 +293,7 @@ icluster = function(data1, data2, outPath, file, return = F, save = T){
   cv = list()
   start = Sys.time()
   for(k in 1:10){
-    cv[[k]] = tune.iClusterPlus(cpus = 50,
+    cv[[k]] = tune.iClusterPlus(cpus = 20,
                                 dt1 = t(data1),
                                 dt2 = t(data2),
                                 type = c('gaussian','gaussian'),

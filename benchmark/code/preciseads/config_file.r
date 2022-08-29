@@ -4,7 +4,7 @@
 #base.dir = '~/git/Review-MLAID/'
 base.dir = '/mnt/netapp2/Store_uni/home/ulc/co/jlb/git/Review-MLAID/'
 
-cluster.type = 'single'
+cluster.type = 'multi'
 input.dir.path = paste0(base.dir, 'benchmark/data/preciseads/')
 path.algs = paste0(base.dir, 'benchmark/code/preciseads/run/', cluster.type, '/')
 pattern.algs = 'run_'

@@ -10,7 +10,7 @@ path.algs = paste0(base.dir, 'benchmark/code/preciseads/run/', cluster.type, '/'
 pattern.algs = 'run_'
 
 
-part = 'cola-corta'
+part = 'thin-shared'
 qos = 'default'
 time = '4-04:00:00'
 mem = '100GB'

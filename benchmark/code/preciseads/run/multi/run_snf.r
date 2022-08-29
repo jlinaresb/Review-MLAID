@@ -1,6 +1,6 @@
 # Run
 
-cesga = F
+cesga = T
 
 if (cesga == T) {
   setwd('/mnt/netapp2/Store_uni/home/ulc/co/jlb/git/Review-MLAID')
@@ -11,8 +11,10 @@ if (cesga == T) {
 source('benchmark/code/utils.r')
 source('benchmark/code/multi-omic/cluster_algorithms_multiomics.r')
 
-exp = readRDS('benchmark/data/preciseads/expression_fcbf_noctrls.rds')
-met = readRDS('benchmark/data/preciseads/methylation_fcbf_noctrls.rds')
+args = commandArgs(trailingOnly = T)
+
+exp = readRDS(args[1])
+met = readRDS(args[2])
 
 res = snf(data1 = exp,
     data2 = met,
@@ -20,9 +22,7 @@ res = snf(data1 = exp,
     alpha = 0.5,
     iters = 30,
     outPath = 'benchmark/results/preciseads/',
-    file = 'snf_preciseads_multiOmic',
+    file = args[3],
     return = T,
     save = F)
 
-res$nclust
-table(res$labels, meta.noctrls$Clusters)

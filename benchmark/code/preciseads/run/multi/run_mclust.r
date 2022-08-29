@@ -11,12 +11,14 @@ if (cesga == T) {
 source('benchmark/code/utils.r')
 source('benchmark/code/multi-omic/cluster_algorithms_multiomics.r')
 
-exp = readRDS('benchmark/data/preciseads/expression_filtered_levene.rds')
-met = readRDS('benchmark/data/preciseads/methylation_filtered_levene.rds')
+args = commandArgs(trailingOnly = T)
+
+exp = readRDS(args[1])
+met = readRDS(args[2])
 
 mclust(data1 = exp,
        data2 = met,
        outPath = 'benchmark/results/preciseads/',
-       file = 'mclust_preciseads_multiOmic',
+       file = args[3],
        return = F,
        save = T)

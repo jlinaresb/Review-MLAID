@@ -1,7 +1,8 @@
 # config file
 # ===
 
-base.dir = '~/git/Review-MLAID/'
+#base.dir = '~/git/Review-MLAID/'
+base.dir = '/mnt/netapp2/Store_uni/home/ulc/co/jlb/git/Review-MLAID/'
 
 cluster.type = 'single'
 input.dir.path = paste0(base.dir, 'benchmark/data/preciseads/')

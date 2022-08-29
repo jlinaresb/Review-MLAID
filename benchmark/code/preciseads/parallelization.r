@@ -1,5 +1,5 @@
-# source('/mnt/netapp2/Store_uni/home/ulc/co/jlb/git/Review-MLAID/benchmark/code/preciseads/config_file.r')
-source('~/git/Review-MLAID/benchmark/code/preciseads/config_file.r')
+source('/mnt/netapp2/Store_uni/home/ulc/co/jlb/git/Review-MLAID/benchmark/code/preciseads/config_file.r')  
+#source('~/git/Review-MLAID/benchmark/code/preciseads/config_file.r')
 
 input.paths.ex = dir(path = paste0(input.dir.path, 'exp/'))
 input.paths.met = dir(path = paste0(input.dir.path, 'met/'))

@@ -5,3 +5,4 @@ benchmark/data
 benchmark/plots/*.tif
 benchmark/plots/*.pdf
 benchmark/plots/*.ai
+benchmark/code/preciseads/Exec

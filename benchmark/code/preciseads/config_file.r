@@ -3,7 +3,7 @@
 
 base.dir = '~/git/Review-MLAID/'
 
-cluster.type = 'multi'
+cluster.type = 'single'
 input.dir.path = paste0(base.dir, 'benchmark/data/preciseads/')
 path.algs = paste0(base.dir, 'benchmark/code/preciseads/run/', cluster.type, '/')
 pattern.algs = 'run_'

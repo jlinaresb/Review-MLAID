@@ -9,10 +9,12 @@ if (cesga == T) {
 source('benchmark/code/utils.r')
 source('benchmark/code/single-omic/cluster_algorithms.r')
 
-met = readRDS('benchmark/data/preciseads/methylation_filtered_levene.rds')
+args = commandArgs(trailingOnly = T)
+
+met = readRDS(args[2])
 
 runall(data = met,
        outPath = 'benchmark/results/preciseads/',
-       file = 'methylation_preciseads',
+       file = args[3],
        return = F,
        save = T)

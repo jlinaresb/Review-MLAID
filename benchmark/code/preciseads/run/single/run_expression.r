@@ -9,10 +9,13 @@ if (cesga == T) {
 source('benchmark/code/utils.r')
 source('benchmark/code/single-omic/cluster_algorithms.r')
 
-exp = readRDS('benchmark/data/preciseads/expression_filtered_levene.rds')
+args = commandArgs(trailingOnly = T)
+
+exp = readRDS(args[1])
+
 
 runall(data = exp,
        outPath = 'benchmark/results/preciseads/',
-       file = 'expression_preciseads',
+       file = args[3],
        return = F,
        save = T)

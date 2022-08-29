@@ -6,8 +6,8 @@ input.paths.met = dir(path = paste0(input.dir.path, 'met/'))
 input.algs = dir(path = path.algs, pattern = pattern.algs)
 
 # input.paths = c(input.paths.ex, input.paths.met)
-i = 1
-j = 1
+# i = 1
+# j = 1
 
 for (i in 1:length(input.paths.ex)) {
   for (j in 1:length(input.algs)) {
@@ -20,16 +20,26 @@ for (i in 1:length(input.paths.ex)) {
     
     jobname = input.algs[j]
     jobname = gsub('run_', '', jobname)
-    jobname = gsub('.r', '', jobname)
+    jobname = gsub('.r', '', jobname, fixed = T)
     
     fstype = input.paths.ex[i]
-    fstype = gsub('.rds', '', unlist(lapply(strsplit(fstype, '_'), '[[', 2)))
+    fstype = gsub('.rds', '', unlist(lapply(strsplit(fstype, '_'), '[[', 2)), fixed = T)
     
-    expPath = input.paths.ex[i]
-    metPath = input.paths.met[i]
+    if (cluster.type == 'multi') {
+      expPath = input.paths.ex[i]
+      metPath = input.paths.met[i]
+    } else if (cluster.type == 'single'){
+      if (jobname == 'expression') {
+        expPath = input.paths.ex[i]
+        metPath = NULL
+      } else if (jobname == 'methylation'){
+        expPath = NULL
+        metPath = input.paths.met[i]
+      }
+    }
     
     filename = paste0(exec.dir, cluster.type, '_', jobname, '_', fstype, '.sh')
-    name = gsub('.sh', '', basename(filename))
+    name = gsub('.sh', '', basename(filename), fixed = T)
     
     sink(filename)
     
@@ -50,5 +60,7 @@ for (i in 1:length(input.paths.ex)) {
     cat(paste('Rscript ', path.algs, input.algs[j],  " $expPath", " $metPath", " $name", sep=''))
     
     sink(file = NULL)
+    
+    system(paste('sbatch ', filename))
   }
 }

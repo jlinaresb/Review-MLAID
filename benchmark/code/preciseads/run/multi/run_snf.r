@@ -23,6 +23,6 @@ res = snf(data1 = exp,
     iters = 30,
     outPath = 'benchmark/results/preciseads/',
     file = args[3],
-    return = T,
-    save = F)
+    return = F,
+    save = T)
 

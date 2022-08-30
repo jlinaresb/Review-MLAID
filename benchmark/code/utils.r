@@ -16,7 +16,7 @@ select_k = function(res, maxK){
   # The optimal K
   optK = Kvec[which.min(PAC)]
   
-  return(PAC)
+  return(optK)
   
 }
 

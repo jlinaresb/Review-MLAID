@@ -75,7 +75,7 @@ conCluster.h = function(data1, data2, maxK = 10, outPath, file, return = F, save
                              pItem = 0.8,
                              pFeature = 1,
                              clusterAlg = 'hc',
-                             distance = 'pearson',
+                             distance = 'minkowski',
                              seed = 1993,
                              plot = NULL)
   # res = calcICL(res)
@@ -345,9 +345,9 @@ COCA = function(data1, data2, outPath, file, return = F, save = T){
   moc = outputBuildMOC$moc
   res = coca::coca(moc, maxK = 10, hclustMethod = 'average')
   
-  nclust = unique(res$clusterLabels)
+  nclust = length(unique(res$clusterLabels))
   labels = res$clusterLabels
-  names(labels) = colnames(data1)
+  names(labels) = rownames(data1)
   
   end = Sys.time()
   time = difftime(end, start, units = 'secs')

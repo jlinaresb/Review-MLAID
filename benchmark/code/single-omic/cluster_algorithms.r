@@ -57,15 +57,15 @@ SOM = function(data){
   require(kohonen)
   df = scale(t(data))
   
-  dim = mapping(nrow(df))
-  
+  #dim = mapping(nrow(df))
+  dim = ifelse(ncol(df) <50, 5, 10)
+
   start = Sys.time()
   grid = somgrid(xdim = dim, ydim = dim,
                           topo = "hexagonal")
 
-  #map = som(df, grid=grid)
-  map = 10
-  
+  map = som(df, grid=grid)
+    
   res = NbClust::NbClust(data = map$codes[[1]], method = 'ward.D', index = 'tau')
   nclust = length(unique(res$Best.partition))
   som_cluster = res$Best.partition

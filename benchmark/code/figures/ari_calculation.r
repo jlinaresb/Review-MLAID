@@ -46,6 +46,7 @@ for (i in seq_along(files)) {
 # Multi-omic clustering
 # ===
 files = list.files(pattern = 'multi')
+files = files[-grep('coca', files)]
 ari.m = list()
 # i = 27
 for (i in seq_along(files)) {

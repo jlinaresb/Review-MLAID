@@ -24,6 +24,7 @@ select_k = function(res, maxK){
 # https://github.com/IARCbioinfo/RNAseq_analysis_scripts/blob/master/RNAseq_unsupervised.R
 select_k2 = function(data, res, maxK){
   
+  require(cluster)
   require(fpc)
   d = data
   clusters = res

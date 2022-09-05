@@ -50,6 +50,8 @@ for (i in 1:length(input.paths.ex)) {
     cat(paste("#SBATCH", "-t", time, '\n'))
     cat(paste("#SBATCH", "--mem", mem, '\n'))
     cat(paste("#SBATCH", "-n", ntasks, '\n'))
+    cat(paste("#SBATCH", "--mail-user=joselb1993@gmail.com", '\n'))
+    cat(paste("#SBATCH", "--mail-type=END", ntasks, '\n'))
     
     cat("module load cesga/2018 gcc/6.4.0 R/4.0.2", '\n')
     

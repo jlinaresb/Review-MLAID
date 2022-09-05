@@ -20,6 +20,52 @@ select_k = function(res, maxK){
   
 }
 
+# Extracted from:
+# https://github.com/IARCbioinfo/RNAseq_analysis_scripts/blob/master/RNAseq_unsupervised.R
+select_k2 = function(data, res, maxK){
+  
+  require(fpc)
+  d = data
+  clusters = res
+  
+  stcl   = lapply(2:maxK, function(i) cluster.stats(dist(t(d)), clusters[[i]]$consensusClass))
+  ldunn = sapply(1:(maxK-1), function(i) stcl[[i]]$dunn )
+  lwbr  = sapply(1:(maxK-1), function(i) stcl[[i]]$wb.ratio )
+  lch   = sapply(1:(maxK-1), function(i) stcl[[i]]$ch)
+  lsil = vector("list",(maxK-1))
+  
+  for(i in 2:maxK){
+    sil = silhouette(clusters[[i]]$consensusClass,dist(t(d),method = "euclidean"))
+    sizes = table(clusters[[i]]$consensusClass)
+    lsil[[i-1]]=sil
+  }
+  
+  msil = sapply(1:(maxK-1), function(i) mean( lsil[[i]][,3] ) )
+  cdl = lapply(2:maxK, function(i) as.dist(1-clusters[[i]]$consensusMatrix ) )
+  md = dist(t(d),method = "euclidean")
+  corl =sapply(cdl, cor,md)
+  
+  co = rep(1,(maxK-1))
+  nclust.co = which.max(corl) + 1  # cophenetic distance
+  
+  co = rep(1,(maxK-1))
+  nclust.sil = which.max(msil) + 1  # silhouette distance
+  
+  co = rep(1,(maxK-1))
+  nclust.dunn = which.max(ldunn) + 1  # dunn index
+  
+  indexes = c(nclust.co, nclust.sil, nclust.dunn)
+  names(indexes) = c('cophenetic', 'silhouette', 'dunn')
+  
+  nclust = as.numeric(table(indexes)[as.numeric(which.max(table(indexes)))])
+  if (nclust == 1) {
+    nclust = nclust.co
+  }
+  
+  return(nclust)
+  
+}
+
 mapping = function(rows){
   
   i = 1

@@ -63,7 +63,8 @@ SOM = function(data){
   grid = somgrid(xdim = dim, ydim = dim,
                           topo = "hexagonal")
 
-  map = som(df, grid=grid)
+  #map = som(df, grid=grid)
+  map = 10
   
   res = NbClust::NbClust(data = map$codes[[1]], method = 'ward.D', index = 'tau')
   nclust = length(unique(res$Best.partition))
@@ -109,7 +110,7 @@ conCluster.km = function(data, maxK){
   end = Sys.time()
   time = difftime(end, start, units = 'secs')
   
-  nclust = select_k(res, maxK)
+  nclust = select_k2(data = data, res = res, maxK = maxK)
   labels = as.numeric(as.factor(res[[nclust]]$clrs[[1]]))
   names(labels) = colnames(data)
   
@@ -137,14 +138,16 @@ conCluster.h = function(data, maxK){
                              pItem = 0.8,
                              pFeature = 1,
                              clusterAlg = 'hc',
-                             distance = 'pearson',
+                             distance = 'euclidean',
+                             innerLinkage = 'ward.D2',
+                             finalLinkage = 'ward.D2'
                              seed = 1993,
                              plot = NULL)
 
   end = Sys.time()
   time = difftime(end, start, units = 'secs')
   
-  nclust = select_k(res, maxK)
+  nclust = select_k2(data = data, res = res, maxK = maxK)
   labels = as.numeric(as.factor(res[[nclust]]$clrs[[1]]))
   names(labels) = colnames(data)
   

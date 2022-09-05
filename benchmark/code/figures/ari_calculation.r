@@ -1,95 +1,82 @@
-setwd('~/git/Review-MLAID/benchmark/results/single-omic/')
+setwd('~/git/Review-MLAID/benchmark/results/preciseads/')
 
-files = list.files()
-time = list()
-l = list()
-res = list()
-# f = 1
-for (f in seq_along(files)) {
-  data = readRDS(files[f])
-  # data = data[-c(3)]
-  
-  for (i in seq_along(data)) {
-    l[[i]] = data.frame(
-      ids = names(data[[i]]$labels),
-      labels = data[[i]]$labels
-    )
-    colnames(l[[i]])[2] = names(data)[i]
-  }
-  
-  x = as.data.frame(l)
-  
-  res[[f]] = x[,-grep('id', colnames(x))]
-  
-} 
-
-names(res) = files
-
-# ARI calculation
+# Single-omic clustering
 # ===
-
-require(mclust)
-require(corrplot)
-require(viridis)
-# kk = res$metagenomic_morgan.rds
-corrplots = list()
-for (i in seq_along(res)) {
-  kk = res[[i]]
-  name = names(res)[i]
+files = list.files(pattern = 'single')
+ari.s = list()
+# i = 1
+for (i in seq_along(files)) {
+  res = readRDS(files[i])
   
-  n <- ncol(kk)
-  algs = colnames(kk)
+  labels = list(
+    Consensus.H  = res[[1]]$labels, 
+    Consensus.KM = res[[2]]$labels,
+    SOM          = res[[3]]$labels,
+    MClust       = res[[4]]$labels,
+    NMF          = res[[5]]$labels
+  )
   
-  ari <- function(i, j, data) {adjustedRandIndex(data[,i], data[,j])}
-  corp <- Vectorize(ari, vectorize.args = list("i","j"))
-  ari_res = outer(1:n, 1:n, corp, data=kk)
-  ari_res[ari_res < 0] = 0
+  ari = data.frame(
+    hierarchical = labels$Consensus.H,
+    kmeans = labels$Consensus.KM,
+    som = labels$SOM,
+    mclust = labels$MClust,
+    nmf = labels$NMF,
+    row.names = names(labels[[1]])
+  )
   
-  rownames(ari_res) = algs
-  colnames(ari_res) = algs
+  # ARI calculation
+  require(mclust)
+  require(corrplot)
   
-  corrplots[[i]] = corrplot(ari_res,
-                            type = 'lower',
-                            col = viridis(10),
-                            tl.col = 'black',
-                            title = name)
-}
-names(corrplots) = names(res)
-
-
-# 
-require(ggcorrplot)
-require(viridis)
-plots = list()
-for (i in seq_along(corrplots)) {
-  toPlot = corrplots[[i]]$corr
+  n = ncol(ari)
+  algs = colnames(ari)
   
-  toPlot[which(is.nan(toPlot))] = 0
+  ari.fun = function(i, j, data) {adjustedRandIndex(data[, i], data[, j])}
+  corp = Vectorize(ari.fun, vectorize.args = list('i', 'j'))
+  ari.s[[i]] = outer(1:n, 1:n, corp, data = ari)
+  rownames(ari.s[[i]]) = algs 
+  colnames(ari.s[[i]]) = algs
   
-  plots[[i]] = ggcorrplot(toPlot,
-                          hc.order = F,
-                          type = 'lower',
-                          lab = T,
-                          insig = 'blank',
-                          title = strsplit(names(corrplots)[i], '_')[[1]][3],
-                          show.legend = F,
-                          show.diag = F, 
-                          tl.cex = 7,
-                          lab_size = 2, 
-                          digits = 1,
-                          colors = c(viridis(1),viridis(2),viridis(3)))
+  names(ari.s)[i] = files[i]
   
 }
-require(ggpubr)
-finalPlot = ggarrange(plots[[6]], plots[[7]], plots[[8]],
-          plots[[1]], plots[[2]], plots[[3]], 
-          plots[[4]], plots[[5]],
-          ncol = 3, nrow = 4, 
-          common.legend = T)
 
-ggsave(plot = finalPlot, 
-       filename = 'ari_singleomic.pdf',
-       device = 'pdf',
-       path = '~/git/Review-MLAID/benchmark/plots/',
-       height = 9,
-       width = 7)
+
+# Multi-omic clustering
+# ===
+files = list.files(pattern = 'multi')
+ari.m = list()
+# i = 27
+for (i in seq_along(files)) {
+  res = readRDS(files[i])
+  
+  ari.m[[i]] = data.frame(
+    labels = res$labels,
+    ids = names(res$labels),
+    algorithm = sapply(strsplit(files[i], '_'), '[[', 2),
+    features = sapply(strsplit(files[i], '_'), '[[', 3),
+    row.names = 1:length(res$labels)
+  )
+}
+ari.m = data.table::rbindlist(ari.m)
+
+
+head(ari.m)
+table(ari.m$features)
+# Split by experiment
+# ==
+experiment = unique(ari.m$features)
+
+exp = list()
+# i = 1
+for (i in seq_along(experiment)) {
+  byexp = ari.m[which(ari.m$features == experiment[i]),]
+  
+  exp[[i]] = reshape2::dcast(dat = byexp,
+                             formula = ids ~ algorithm,
+                             fun.aggregate = sum,
+                             value.var = 'labels')
+  
+}
+dim(exp[[i]])

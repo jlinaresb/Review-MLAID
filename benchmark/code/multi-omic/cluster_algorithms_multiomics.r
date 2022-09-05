@@ -37,7 +37,7 @@ conCluster.km = function(data1 ,data2, maxK = 10, outPath, file, return = F, sav
   end = Sys.time()
   time = difftime(end, start, units = 'secs')
   
-  nclust = select_k(res, maxK)
+  nclust = select_k2(data = data, res = res, maxK = maxK)
   labels = as.numeric(as.factor(res[[nclust]]$clrs[[1]]))
   names(labels) = colnames(data_bind)
   
@@ -69,13 +69,15 @@ conCluster.h = function(data1, data2, maxK = 10, outPath, file, return = F, save
   
   # Fit model
   start = Sys.time()
-  res = ConsensusClusterPlus(data_bind,
+  res = ConsensusClusterPlus(data,
                              maxK = maxK,
                              reps = 1000,
                              pItem = 0.8,
                              pFeature = 1,
                              clusterAlg = 'hc',
-                             distance = 'minkowski',
+                             distance = 'euclidean',
+                             innerLinkage = 'ward.D2',
+                             finalLinkage = 'ward.D2'
                              seed = 1993,
                              plot = NULL)
   # res = calcICL(res)
@@ -83,7 +85,7 @@ conCluster.h = function(data1, data2, maxK = 10, outPath, file, return = F, save
   end = Sys.time()
   time = difftime(end, start, units = 'secs')
   
-  nclust = select_k(res, maxK)
+  nclust = select_k2(data = data, res = res, maxK = maxK)
   labels = as.numeric(as.factor(res[[nclust]]$clrs[[1]]))
   names(labels) = colnames(data_bind)
   
@@ -119,7 +121,8 @@ SOM = function(data1, data2, outPath, file, return = F, save = T){
   grid = somgrid(xdim = dim, ydim = dim,
                  topo = "hexagonal")
   
-  map = som(df, grid=grid)
+  #map = som(df, grid=grid)
+  map = 10
   
   res = NbClust::NbClust(data = map$codes[[1]], 
                          method = 'ward.D',

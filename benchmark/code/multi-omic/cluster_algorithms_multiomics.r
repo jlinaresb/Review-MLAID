@@ -77,7 +77,7 @@ conCluster.h = function(data1, data2, maxK = 10, outPath, file, return = F, save
                              clusterAlg = 'hc',
                              distance = 'euclidean',
                              innerLinkage = 'ward.D2',
-                             finalLinkage = 'ward.D2'
+                             finalLinkage = 'ward.D2',
                              seed = 1993,
                              plot = NULL)
   # res = calcICL(res)

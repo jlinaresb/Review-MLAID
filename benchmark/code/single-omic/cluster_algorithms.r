@@ -140,7 +140,7 @@ conCluster.h = function(data, maxK){
                              clusterAlg = 'hc',
                              distance = 'euclidean',
                              innerLinkage = 'ward.D2',
-                             finalLinkage = 'ward.D2'
+                             finalLinkage = 'ward.D2',
                              seed = 1993,
                              plot = NULL)
 

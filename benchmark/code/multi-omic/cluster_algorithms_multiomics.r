@@ -69,7 +69,7 @@ conCluster.h = function(data1, data2, maxK = 10, outPath, file, return = F, save
   
   # Fit model
   start = Sys.time()
-  res = ConsensusClusterPlus(data,
+  res = ConsensusClusterPlus(data_bind,
                              maxK = maxK,
                              reps = 1000,
                              pItem = 0.8,

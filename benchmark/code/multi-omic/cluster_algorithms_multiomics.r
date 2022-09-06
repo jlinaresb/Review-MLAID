@@ -37,7 +37,7 @@ conCluster.km = function(data1 ,data2, maxK = 10, outPath, file, return = F, sav
   end = Sys.time()
   time = difftime(end, start, units = 'secs')
   
-  nclust = select_k2(data = data, res = res, maxK = maxK)
+  nclust = select_k2(data = data_bind, res = res, maxK = maxK)
   labels = as.numeric(as.factor(res[[nclust]]$clrs[[1]]))
   names(labels) = colnames(data_bind)
   
@@ -85,7 +85,7 @@ conCluster.h = function(data1, data2, maxK = 10, outPath, file, return = F, save
   end = Sys.time()
   time = difftime(end, start, units = 'secs')
   
-  nclust = select_k2(data = data, res = res, maxK = maxK)
+  nclust = select_k2(data = data_bind, res = res, maxK = maxK)
   labels = as.numeric(as.factor(res[[nclust]]$clrs[[1]]))
   names(labels) = colnames(data_bind)
   

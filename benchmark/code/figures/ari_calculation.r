@@ -46,7 +46,7 @@ for (i in seq_along(files)) {
 # Multi-omic clustering
 # ===
 files = list.files(pattern = 'multi')
-files = files[-grep('coca', files)]
+# files = files[-grep('coca', files)]
 ari.m = list()
 # i = 27
 for (i in seq_along(files)) {
@@ -78,6 +78,34 @@ for (i in seq_along(experiment)) {
                              formula = ids ~ algorithm,
                              fun.aggregate = sum,
                              value.var = 'labels')
+  exp[[i]] = exp[[i]][,2:7]
+  n = ncol(exp[[i]])
+  algs = colnames(exp[[i]])
+  
+  ari.fun = function(i, j, data) {adjustedRandIndex(data[, i], data[, j])}
+  corp = Vectorize(ari.fun, vectorize.args = list('i', 'j'))
+  exp[[i]] = outer(1:n, 1:n, corp, data = exp[[i]])
+  rownames(exp[[i]]) = algs 
+  colnames(exp[[i]]) = algs
   
 }
-dim(exp[[i]])
+names(exp) = experiment
+ari.m = exp
+
+
+# Plotting
+# ===
+# ari.s
+# ari.m
+
+require(corrplot)
+require(viridis)
+f = 1
+corrplot(ari.m[[f]],
+         method = 'square',
+         type = 'lower',
+         col = rev(viridis(10)),
+         title = names(ari.m)[f],
+         tl.col = 'black')
+
+

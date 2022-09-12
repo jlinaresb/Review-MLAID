@@ -46,7 +46,6 @@ for (i in seq_along(files)) {
 # Multi-omic clustering
 # ===
 files = list.files(pattern = 'multi')
-# files = files[-grep('coca', files)]
 ari.m = list()
 # i = 27
 for (i in seq_along(files)) {
@@ -64,13 +63,13 @@ ari.m = data.table::rbindlist(ari.m)
 
 
 head(ari.m)
-table(ari.m$features)
+table(ari.m$algorithm)
 # Split by experiment
 # ==
 experiment = unique(ari.m$features)
 
 exp = list()
-# i = 1
+i = 1
 for (i in seq_along(experiment)) {
   byexp = ari.m[which(ari.m$features == experiment[i]),]
   
@@ -78,7 +77,7 @@ for (i in seq_along(experiment)) {
                              formula = ids ~ algorithm,
                              fun.aggregate = sum,
                              value.var = 'labels')
-  exp[[i]] = exp[[i]][,2:7]
+  exp[[i]] = exp[[i]][,2:9]
   n = ncol(exp[[i]])
   algs = colnames(exp[[i]])
   
@@ -100,12 +99,47 @@ ari.m = exp
 
 require(corrplot)
 require(viridis)
-f = 1
-corrplot(ari.m[[f]],
-         method = 'square',
-         type = 'lower',
-         col = rev(viridis(10)),
-         title = names(ari.m)[f],
-         tl.col = 'black')
+# corrplot(ari.s[[f]],
+#          method = 'square',
+#          type = 'lower', is.corr = T,
+#          col = rev(viridis(10)),
+#          title = names(ari.m)[f],
+#          tl.col = 'black')
+# 
+# names(ari.s)
+f = 3
+ggcorrplot::ggcorrplot(ari.s[[f]],
+                       hc.order = F, 
+                       type = 'lower',
+                       show.diag = T,
+                       lab = F,
+                       legend.title = 'ARI',
+                       method = 'square') +
+  scale_fill_continuous(type = 'viridis') +
+  ggtitle(gsub('.rds', '', names(ari.s)[f]))
 
 
+
+# Probe
+
+all = c(ari.s, ari.m)
+
+plotting = list()
+names = names(all)
+for (i in seq_along(names)) {
+  plotting[[i]] = all[[i]]
+  plotting[[i]][upper.tri(plotting[[i]])] = NA
+  plotting[[i]] = melt(plotting[[i]], na.rm = T)
+  plotting[[i]]$experiment = gsub('.rds', '', names[i])
+}
+plotting = data.table::rbindlist(plotting)
+
+ggplot(data = plotting, aes(x = Var1, y = Var2, fill = value)) +
+  geom_tile() +
+  scale_fill_continuous(type = 'viridis') +
+  theme_light() +
+  facet_wrap(~experiment, scales = 'free') +
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.title = element_blank())
+  
+  

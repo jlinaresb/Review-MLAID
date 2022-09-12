@@ -3,6 +3,7 @@ setwd('~/git/Review-MLAID/benchmark/results/preciseads/')
 # Single-omic clustering
 # ===
 files = list.files(pattern = 'single')
+files = files[grep('noctrls', files)]
 nclust1 = list()
 for (i in seq_along(files)) {
   res = readRDS(files[i])
@@ -28,6 +29,7 @@ names(nclust1)[3] = 'algorithm'
 # Multi-omic clustering
 # ===
 files = list.files(pattern = 'multi')
+files = files[grep('noctrls', files)]
 nclust2 = list()
 for (i in seq_along(files)) {
   res = readRDS(files[i])
@@ -50,6 +52,7 @@ toPlot$algorithm[which(toPlot$algorithm == 'Consensus.KM')] = 'kmeans'
 toPlot$algorithm[which(toPlot$algorithm == 'MClust')] = 'mclust'
 toPlot$algorithm[which(toPlot$algorithm == 'NMF')] = 'nmf'
 toPlot$algorithm[which(toPlot$algorithm == 'SOM')] = 'som'
+
 
 # Plotting
 # ===

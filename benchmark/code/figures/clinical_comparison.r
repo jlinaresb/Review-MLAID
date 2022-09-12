@@ -43,12 +43,31 @@ for (i in seq_along(files)) {
 }
 names(compare) = gsub('.rds', '', files)
 
-toPlot = compare[[1]]
+toPlot = compare[[1]]   #change for fs type!!
 
 algs = names(toPlot)[1:5]
 toPlot = melt(toPlot, 
               measure.vars = c('Monocytes', 'Neutrophils', 'BCells',
                           'NKCells', 'CD4TCells', 'CD8TCells'))
+
+toPlot = melt(toPlot, measure.vars = c('hierarchical', 'kmeans', 'som',
+                                       'mclust', 'nmf' ))
+
+names(toPlot) = c('cellType', 'cellProp', 'algorithm', 'nclust')
+
+singlePlot = 
+  ggboxplot(data = toPlot, 
+            x = 'nclust',
+            y = 'cellProp',
+            fill = 'cellType') +
+  facet_grid(cellType~algorithm, scales = 'free_x') +
+  stat_compare_means(label = 'p.signif', 
+                     hide.ns = T,
+                     label.y = 4, 
+                     label.x.npc = .5)
+
+singlePlot
+
 
 # ggboxplot(data = toPlot, 
 #           x = 'hierarchical', 
@@ -77,8 +96,9 @@ toPlot = melt(toPlot,
 
 
 # Multi-omic
+# ====
 files = list.files(path = path, pattern = 'multi_')
-files = files[-grep('coca', files)]
+# files = files[-grep('coca', files)]
 compare = list()
 # i = 27
 for (i in seq_along(files)) {
@@ -116,46 +136,26 @@ for (i in seq_along(experiment)) {
 }
 names(exp) = experiment
 
-toPlot = exp[[1]]
-algs = names(toPlot)[2:7]
+toPlot = exp[[2]]
+algs = names(toPlot)[2:9]
 toPlot = melt(toPlot, 
               measure.vars = c('Monocytes', 'Neutrophils', 'BCells',
                                'NKCells', 'CD4TCells', 'CD8TCells'))
 
+toPlot = melt(toPlot, measure.vars = algs)
 
+names(toPlot) = c('ids', 'cellType', 'cellProp', 'algorithm', 'nclust')
 head(toPlot)
-ggboxplot(data = toPlot, 
-          x = 'hierarchical',
-          y = 'value',
-          facet.by = 'variable') + stat_compare_means()
 
-ggboxplot(data = toPlot,
-          x = 'kmeans',
-          y = 'value',
-          facet.by = 'variable') + stat_compare_means()
+multiPlot = 
+  ggboxplot(data = toPlot, 
+          x = 'nclust',
+          y = 'cellProp',
+          fill = 'cellType') +
+  facet_grid(cellType~algorithm, scales = 'free_x') +
+  stat_compare_means(label = 'p.signif', 
+                     hide.ns = T,
+                     label.y = 4, 
+                     label.x.npc = .5)
 
-ggboxplot(data = toPlot,
-          x = 'som',
-          y = 'value',
-          facet.by = 'variable') + stat_compare_means()
-
-ggboxplot(data = toPlot,
-          x = 'mclust',
-          y = 'value',
-          facet.by = 'variable') + stat_compare_means()
-
-ggboxplot(data = toPlot,
-          x = 'nmf',
-          y = 'value',
-          facet.by = 'variable') + stat_compare_means()
-
-ggboxplot(data = toPlot,
-          x = 'snf',
-          y = 'value',
-          facet.by = 'variable') + stat_compare_means()
-
-ggboxplot(data = toPlot,
-          x = 'icluster',
-          y = 'value',
-          facet.by = 'variable') + stat_compare_means()
-
+multiPlot

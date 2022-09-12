@@ -25,21 +25,21 @@ time = time[-grep('noctrls', time$fs), ]
 time = time[-6,]
 
 require(reshape2)
-toPlot = melt(time, id.vars = c('nfeatures', 'fs'))
-toPlot$value = log10(as.numeric(toPlot$value))
+toPlot.s = melt(time, id.vars = c('nfeatures', 'fs'))
+toPlot.s$value = log10(as.numeric(toPlot.s$value))
 
 require(ggpubr)
-require(viridis)
-plot_time = ggplot(toPlot, aes(x=nfeatures, y=value, color = variable)) + 
-  geom_line() +
-  scale_color_manual(values = viridis(5)) +
-  # geom_smooth(method = lm, se = F) +
-  # facet_wrap(~omic, scales = 'free_x') +
-  theme_bw() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  theme(legend.position = 'top')
-plot_time
+# require(viridis)
+# plot_time.s = ggplot(toPlot, aes(x=nfeatures, y=value, color = variable)) + 
+#   geom_line() +
+#   scale_color_manual(values = viridis(5)) +
+#   # geom_smooth(method = lm, se = F) +
+#   # facet_wrap(~omic, scales = 'free_x') +
+#   theme_bw() +
+#   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+#   theme(legend.position = 'top')
 
+toPlot.s$omic = 'single'
 
 
 
@@ -83,17 +83,52 @@ time = time[-grep('noctrls', time$features), ]
 time$time = log10(time$time)
 
 
-toPlot = time
+toPlot.m = time
+toPlot.m$omic = 'multi'
 
-plot_time = ggplot(toPlot, aes(x=nfeatures, y=time, color = algorithm)) + 
+# plot_time.m = ggplot(toPlot, aes(x=nfeatures, y=time, color = algorithm)) + 
+#   geom_line() +
+#   scale_color_manual(values = viridis(8)) +
+#   # geom_smooth(method = lm, se = F) +
+#   # facet_wrap(~omic, scales = 'free_x') +
+#   theme_bw() +
+#   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+#   theme(legend.position = 'top')
+
+
+head(toPlot.s)
+head(toPlot.m)
+
+names(toPlot.s)[2] = 'features'
+names(toPlot.s)[3] = 'algorithm'
+names(toPlot.s)[4] = 'time'
+toPlot.s = toPlot.s[,match(names(toPlot.m), names(toPlot.s))]
+
+toPlot = rbind.data.frame(toPlot.s, toPlot.m)
+toPlot$algorithm = as.character(toPlot$algorithm)
+
+toPlot$algorithm[which(toPlot$algorithm == 'Consensus.H')] = 'hierarchical'
+toPlot$algorithm[which(toPlot$algorithm == 'Consensus.KM')] = 'kmeans'
+toPlot$algorithm[which(toPlot$algorithm == 'MClust')] = 'mclust'
+toPlot$algorithm[which(toPlot$algorithm == 'NMF')] = 'nmf'
+toPlot$algorithm[which(toPlot$algorithm == 'SOM')] = 'som'
+
+table(toPlot$algorithm)
+str(toPlot)
+toPlot$time = abs(toPlot$time)
+
+ggplot(toPlot, aes(x=nfeatures, 
+                   y=time, 
+                   color = algorithm)) +
   geom_line() +
   scale_color_manual(values = viridis(8)) +
   # geom_smooth(method = lm, se = F) +
-  # facet_wrap(~omic, scales = 'free_x') +
+  facet_wrap(~omic, scales = 'free_x') +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   theme(legend.position = 'top')
-plot_time
+
+
 
 
 # ggsave(plot = plot_time, 

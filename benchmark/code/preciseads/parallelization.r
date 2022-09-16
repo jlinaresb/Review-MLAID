@@ -6,7 +6,7 @@ input.paths.met = dir(path = paste0(input.dir.path, 'met/'))
 input.algs = dir(path = path.algs, pattern = pattern.algs)
 
 # input.paths = c(input.paths.ex, input.paths.met)
-# i = 1
+# i = 2
 # j = 1
 
 for (i in 1:length(input.paths.ex)) {

@@ -1,25 +1,8 @@
-# Systematic review of omic-based unsupervised models in Autoimmune diseases
-
-
-## Current stage: 
-![pb](https://progress-bar.dev/100/?title=Query)
-![pb](https://progress-bar.dev/100/?title=QA)
-![pb](https://progress-bar.dev/100/?title=InclusionExclusion)
-![pb](https://progress-bar.dev/100/?title=Classification)
-![pb](https://progress-bar.dev/0/?title=Analysis)
-![pb](https://progress-bar.dev/0/?title=Redaction)
-
+# Molecular-based clustering models in Autoimmune diseases. A systematic review and benchmarking
 
 
 ## Study Design
 This is a systematic review of unsupervised models carried out in Autoimmune diseases (AID), which follows Preferred Reporting Items for Systematic Reviews [PRISMA-P](http://prisma-statement.org/Extensions/Protocols) guidelines.
-
-
-## Research Question
-This systematic review aims to describe unsupervised models built on several AID, using any type of omic data. Therefore, we formulated the following questions:
-* **Which unsupervised models have been used to stratify AID patients?**
-* **What omic data were used?**
-* **Is there common clusters through all AID cohorts?**
 
 
 ## Motivation
@@ -27,7 +10,7 @@ AID are characterised by a clinical heterogenity, impeding a early diagnosis and
 
 
 ## Search Strategies
-The literature search was carried out using Scopus API's through [rscopus](https://johnmuschelli.com/rscopus/) package. The search was updated from 10st February 2022 to ADD FINAL DATE.
+The literature search was carried out using Scopus API's through [rscopus](https://johnmuschelli.com/rscopus/) package. The search was updated from February 10th 2022 to November 3rd 2022.
 
 
 ## Diseases included:
@@ -45,7 +28,7 @@ All except IBD and MSc are included in [ADEx](https://adex.genyo.es/).
 
 
 ### Query on Scopus
-Query was constructed by three conditional aspects: disease, approach, omic type. Query was built on [search_scopus_v2.r](https://github.com/jlinaresb/Review-MLAID/blob/master/search_scopus_v2.r) script. 
+Query was constructed by three conditional aspects: disease, approach and omic type. Query was built on [search_scopus_v2.r](https://github.com/jlinaresb/Review-MLAID/blob/master/search_scopus_v2.r) script. 
 
 
 #### Disease type:
@@ -99,21 +82,7 @@ Methodological
 
 ##  flowchart and number of papers reviewd at each stage
 
-* Identification
-Records through scripting query: 5850
-Additional records
-
-* Screening
-Only articles type records: 4602
-Only available DOIs records: 4472
-Records after duplicates removed: 2103
-
-* Eligibility
-Records with 'cohort' word in the abstract: 218
-Records included after abstract review:
-
-* Included
-Studies included in the systematic review: 
+![flowchart](systematic-review/figures/figure1.jpg?raw=true "flow chart")
 
 
 ## Inclusion criteria
